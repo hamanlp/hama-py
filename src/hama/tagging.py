@@ -1,26 +1,38 @@
-import pandas as pd
-from hama.sequence import insert, cartesian_product
+from hama.sequence import (insert, cartesian_product, 
+        adjacent_char_cmp)
+from hama.dict import Dict, MGraph
 
-data = pd.read_csv('morphemes.csv')
 
-
-def tag(text):
+def tag(text, zipped=False):
     """Produces POS tags for each morpheme in a text.
 
     Args:
         text (str): Text to separate into morphemes and tag.
+        zipped (bool): If True, returns a list of tuples in the 
+        form of (morpheme, tag).
+        If False, returns a tuple with two lists: morphemes and 
+        corresponding tags. Lengths of two lists are the same.
+        Defaulted to False.
 
     Returns:
         list: list containing tuples in the form of:
         (morpheme, tag).
     """
+    dic = Dict()
+    dic.load()
+    mgraph = MGraph()
+    mgraph.load()
 
+    morphemes = []
     tags = []
     words = text.split()
     for word in words:
-        word_tags = tag_word(word)
-        tags.extend(word_tags)
-    return tags
+        w_morphemes, w_tags = tag_word(word)
+        morphemes.extend(w_morphemes)
+        tags.extend(w_tags)
+    if zipped:
+        return list(zip(morphemes,tags))
+    return (morphemes, tags)
 
 
 def tag_word(word):
@@ -30,8 +42,9 @@ def tag_word(word):
         word (str): Word to separate into morphemes and tag.
 
     Returns:
-        list: List containing tuples in the form of:
-        (morpheme, tag).
+        tuple: tuple containing two lists: 
+        morphemes and corresponding tags.
+        Lengths of two lists are the same.
     """
 
     candidate_ms = candidate_morpheme_seqs(word)
@@ -47,7 +60,8 @@ def tag_word(word):
                 best_ms = cms
                 best_ts = ts
                 best_score = s
-    return zip(best_ms, best_ts)
+    assert(len(best_ms) == len(best_ts))
+    return (best_ms, best_ts)
 
 
 def candidate_morpheme_seqs(word):
@@ -86,7 +100,12 @@ def score_tag_seq(ts):
     Returns:
         float: Tag sequence likeliness score.
     """
-    return 1.0
+    max_score = 0
+    for g in MGraph().graph:
+        s = adjacent_char_cmp(ts, g)
+        if s > max_score:
+            max_score = s
+    return max_score / len(ts)
 
 
 def candidate_tags(ms):
@@ -122,15 +141,7 @@ def query_dict(morpheme):
 
     Returns:
         list: List containing all found tags in the 
-        embedded dictionary.
-        empty if not found.
+        embedded dictionary. Empty if not found.
     """
+    return Dict().query(morpheme)
 
-    tags = []
-    # Change when using bloom filters.
-    entries = data.loc[data.term.isin([morpheme])]
-    if len(entries) > 0:
-        for row in entries.itertuples():
-            tags.append(row.pos22)
-    ########################################
-    return tags
