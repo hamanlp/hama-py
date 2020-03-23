@@ -1,6 +1,6 @@
 import pytest
 import hama
-from hama.tagging import (query_dict, candidate_tags, score_tag_seq,
+from hama.tagging import (candidate_tags, score_tag_seq,
                           candidate_morpheme_seqs, tag_word)
 
 def test_candidate_tags():
