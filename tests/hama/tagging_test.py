@@ -2,15 +2,6 @@ import pytest
 import hama
 from hama.tagging import (query_dict, candidate_tags, score_tag_seq,
                           candidate_morpheme_seqs, tag_word)
-from hama.dict import Dict, MGraph
-
-
-def test_query_dict():
-    Dict().load()
-    assert (query_dict('') == [])
-    assert (query_dict('아버지') == ['nc'])
-    assert (query_dict('가') == ['ep', 'xp', 'nc', 'jc', 'ec'])
-
 
 def test_candidate_tags():
     assert (candidate_tags([]) == [])
@@ -19,7 +10,6 @@ def test_candidate_tags():
 
 
 def test_score_tag_seq():
-    MGraph().load()
     pass
 
 
@@ -41,10 +31,10 @@ def test_tag_word():
 
 def test_tag():
     text = '돼지가 아니라 하마입니다.'
-    #tags = hama.tag(text)
-    #print(tags)
+    tags = hama.tag(text)
+    print(tags)
 
     text = '밥주세요.'
-    tags = hama.tag(text, zipped=True)
-    print(tags)
+    #tags = hama.tag(text, zipped=True)
+    #print(tags)
 

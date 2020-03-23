@@ -131,17 +131,3 @@ def candidate_tags(ms):
             tags.append(['u'])
     assert (len(ms) == len(tags))
     return tags
-
-
-def query_dict(morpheme):
-    """Queries embedded dictionary for morpheme.
-
-    Args:
-        morpheme (str): Morpheme to search for.
-
-    Returns:
-        list: List containing all found tags in the 
-        embedded dictionary. Empty if not found.
-    """
-    return Dict().query(morpheme)
-
