@@ -1,2 +1,20 @@
 # hama-py
 🦛 파이썬 형태소 분석기. Python Korean Morpheme Analyzer
+
+## Formatting
+```
+yapf -i -r -vv .
+```
+
+## Testing
+```
+coverage run -m pytest -v
+coverage report
+```
+
+## Profiling
+From the project root:
+```
+python -m cProfile -o profile/out.profile profile/profile.py
+python profile/timing.py
+```
