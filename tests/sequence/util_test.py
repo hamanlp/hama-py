@@ -14,3 +14,4 @@ def test_cartesian_product():
     l3 = ['d', 'e']
     l4 = [('a', 'c', 'd'), ('a', 'c', 'e'), ('b', 'c', 'd'), ('b', 'c', 'e')]
     assert (l4 == cartesian_product(l1, l2, l3))
+
