@@ -1,3 +1,4 @@
+import re
 from hama.sequence import (insert, cartesian_product, 
         adjacent_char_cmp)
 from hama.dict import Dict, MGraph
@@ -25,7 +26,7 @@ def tag(text, zipped=False):
 
     morphemes = []
     tags = []
-    words = text.split()
+    words =  re.findall(r"[\w']+|[.,!?;]", text)
     for word in words:
         w_morphemes, w_tags = tag_word(word)
         morphemes.extend(w_morphemes)
@@ -54,6 +55,7 @@ def tag_word(word):
     for cms in candidate_ms:
         ct = candidate_tags(cms)
         tag_seqs = cartesian_product(*ct)
+        
         for ts in tag_seqs:
             s = score_tag_seq(ts)
             if s > best_score:
@@ -76,13 +78,41 @@ def candidate_morpheme_seqs(word):
         For example, 메롱is partitioned into [[메롱], [메,롱]].
     """
 
-    partitions = []
+    cache = {}
+    partitions = _candidate_morpheme_seqs(cache, word)
+
+    return partitions
+
+
+def _candidate_morpheme_seqs(cache, word):
+    """Recursive helper for candidate_morpheme_seqs.
+    Produces every possible partition of word 
+    into candidate morphemes.
+
+    Args:
+        cache (dict): Dictionary for dynamic programming 
+        memoization.
+        word (string): String to partition into morphemes.
+
+    Returns:
+        list: Returns a 2-D array of strings.
+        For example, 메롱is partitioned into [[메롱], [메,롱]].
+    """
     if len(word) <= 0:
         return []
     elif len(word) <= 1:
         return [[word]]
-    head = word[0]
-    tail_partitions = candidate_morpheme_seqs(word[1:])
+
+    # Query dict for memoization.
+    key = word
+    if key in cache:
+        return cache[key]
+    else:
+        head = word[0]
+        tail = word[1:]
+        tail_partitions = _candidate_morpheme_seqs(cache, word[1:])
+        cache[key] = tail_partitions
+        partitions = []
     for partition in tail_partitions:
         # Attach head to the first char in partition.
         partitions.append(insert(partition[1:], 0, head + partition[0]))
@@ -100,13 +130,13 @@ def score_tag_seq(ts):
     Returns:
         float: Tag sequence likeliness score.
     """
-    max_score = 0
-    for g in MGraph().graph:
-        s = adjacent_char_cmp(ts, g)
-        if s > max_score:
-            max_score = s
-    return max_score / len(ts)
-
+    ts_string = "".join(ts)
+    no_unknowns = [e for e in ts if e != 'u']
+    if MGraph().query(ts_string):
+        score = 1 + len(no_unknowns) / len(ts)
+    else:
+        score =  len(no_unknowns) / len(ts)
+    return score
 
 def candidate_tags(ms):
     """Produces a list of possible tags for each morpheme 
@@ -124,7 +154,7 @@ def candidate_tags(ms):
     """
     tags = []
     for m in ms:
-        m_tags = query_dict(m)
+        m_tags = Dict().query(m)
         if len(m_tags) > 0:
             tags.append(m_tags)
         else:
