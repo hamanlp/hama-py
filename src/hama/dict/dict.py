@@ -4,25 +4,24 @@ import pandas as pd
 
 class Dict(metaclass=Singleton):
     """Class responsible for managing embedded morpheme dictionary.
+
+    Attributes:
+        dict (obj): Morpheme dictionary.
     """
     
     def __init__(self):
-        """Initialize singleton dictionary class.
-        """
+        """Initialize singleton dictionary class."""
 
         super().__init__()
         self.dict = None 
-        """obj: Morpheme dictionary."""
 
     def load(self):
-        """Loads morpheme dictionary into memory.
-        """
+        """Loads morpheme dictionary into memory."""
         if self.dict is None:
             self.dict = pd.read_csv('morphemes.csv')
 
     def unload(self):
-        """Unloads morpheme dictionary from memory.
-        """
+        """Unloads morpheme dictionary from memory."""
         self.dict = None
 
     def query(self, m):
