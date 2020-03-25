@@ -9,7 +9,7 @@ yapf -i -r -vv .
 ## Testing
 ```
 coverage run -m pytest -v
-coverage report
+coverage report -m
 ```
 
 ## Profiling
