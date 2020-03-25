@@ -28,3 +28,43 @@ def cartesian_product(*lists):
     """
     pairs = list(product(*lists))
     return pairs
+
+
+def on_bits(n):
+    """Returns indices of activated bits in the 
+    binary representation of integer n.
+    
+    Args: 
+        n (int): Integer.
+
+    Returns:
+        list: List of indices where bit is 1 in 
+        binary form of n.
+    """
+    activated = []
+    index = 0
+    while n:
+        if n & 1:
+            activated.append(index)
+        n >>= 1
+        index += 1
+    return activated
+
+
+def split_after_indices(s, indices):
+    """Split string at indices
+    
+    Args: 
+        s (str): String to segment.
+        indices (list): Indices to segment at.
+        indices must be sorted, and the biggest element of 
+        indices must be smaller than len(s).
+
+    Returns:
+        list: String segmented at indices.
+    """
+    assert (sorted(indices) == indices)
+    assert (len(indices) == 0 or indices[-1] < len(s))
+    start_indices = [-1] + indices
+    end_indices = indices + [len(s)]
+    return [s[i + 1:j + 1] for i, j in zip(start_indices, end_indices)]
