@@ -1,6 +1,5 @@
 import re
-from hama.sequence import (insert, cartesian_product, 
-        adjacent_char_cmp)
+from hama.sequence import (insert, cartesian_product, adjacent_char_cmp)
 from hama.dict import Dict, MGraph
 
 
@@ -26,13 +25,13 @@ def tag(text, zipped=False):
 
     morphemes = []
     tags = []
-    words =  re.findall(r"[\w']+|[.,!?;]", text)
+    words = re.findall(r"[\w']+|[.,!?;]", text)
     for word in words:
         w_morphemes, w_tags = tag_word(word)
         morphemes.extend(w_morphemes)
         tags.extend(w_tags)
     if zipped:
-        return list(zip(morphemes,tags))
+        return list(zip(morphemes, tags))
     return (morphemes, tags)
 
 
@@ -55,14 +54,14 @@ def tag_word(word):
     for cms in candidate_ms:
         ct = candidate_tags(cms)
         tag_seqs = cartesian_product(*ct)
-        
+
         for ts in tag_seqs:
             s = score_tag_seq(ts)
             if s > best_score:
                 best_ms = cms
                 best_ts = ts
                 best_score = s
-    assert(len(best_ms) == len(best_ts))
+    assert (len(best_ms) == len(best_ts))
     return (best_ms, best_ts)
 
 
@@ -135,8 +134,9 @@ def score_tag_seq(ts):
     if MGraph().query(ts_string):
         score = 1 + len(no_unknowns) / len(ts)
     else:
-        score =  len(no_unknowns) / len(ts)
+        score = len(no_unknowns) / len(ts)
     return score
+
 
 def candidate_tags(ms):
     """Produces a list of possible tags for each morpheme 

@@ -7,9 +7,9 @@ def test_generate_pairs():
     s1 = ['F', 'R', 'A', 'N', 'C', 'E']
     assert (_generate_pairs(s1) == ['FR', 'RA', 'AN', 'NC', 'CE'])
     s2 = []
-    assert(_generate_pairs(s2) == [])
+    assert (_generate_pairs(s2) == [])
     s3 = ['P']
-    assert(_generate_pairs(s3) == ['P'])
+    assert (_generate_pairs(s3) == ['P'])
 
 
 def test_adjacent_char_cmp():

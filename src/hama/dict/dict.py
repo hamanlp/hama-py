@@ -11,12 +11,12 @@ class Dict(metaclass=Singleton):
         dict (dic): Morpheme dictionaries.
         Keys include KAIST POS22 tags.
     """
-    
+
     def __init__(self):
         """Initialize singleton dictionary class."""
 
         super().__init__()
-        self.dict = None 
+        self.dict = None
 
     def __getattr__(self, name):
         """Called when an called attribute does not exist."""
@@ -26,8 +26,8 @@ class Dict(metaclass=Singleton):
         """Loads morpheme dictionary into memory."""
         if self.dict is None:
 
-            config_path = os.path.join(
-                    os.path.dirname(__file__), 'meta/source.ini')
+            config_path = os.path.join(os.path.dirname(__file__),
+                                       'meta/source.ini')
             config = configparser.ConfigParser()
             config.read(config_path)
 
@@ -38,15 +38,14 @@ class Dict(metaclass=Singleton):
             self.dict = {}
             for name, path in fp.items():
                 if name[0] == 'd':
-                    filter = LookupBloomFilter(
-                            path=path,
-                            size=int(sz[name]),
-                            hash_count=int(hc[name]))
+                    filter = LookupBloomFilter(path=path,
+                                               size=int(sz[name]),
+                                               hash_count=int(hc[name]))
                     filter.load()
 
                     tag = name[2:]
                     self.dict[tag] = filter
-        
+
     def unload(self):
         """Unloads morpheme dictionary from memory."""
         self.dict = None
@@ -72,6 +71,4 @@ class Dict(metaclass=Singleton):
         for tag, dict in self.dict.items():
             if dict.query(m):
                 tags.append(tag)
-        return tags 
-
-
+        return tags

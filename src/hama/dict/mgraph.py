@@ -15,7 +15,7 @@ class MGraph(metaclass=Singleton):
         """Initialize singleton MGraph class."""
 
         super().__init__()
-        self.graph = None 
+        self.graph = None
 
     def __getattr__(self, name):
         """Called when an called attribute does not exist."""
@@ -25,23 +25,21 @@ class MGraph(metaclass=Singleton):
         """Loads morpheme graph into memory."""
         if self.graph is None:
 
-            config_path = os.path.join(
-                    os.path.dirname(__file__), 'meta/source.ini')
+            config_path = os.path.join(os.path.dirname(__file__),
+                                       'meta/source.ini')
             config = configparser.ConfigParser()
             config.read(config_path)
-            
+
             fp = config['FILTER_PATH']['g']
             hc = config['HASH_COUNT']['g']
             sz = config['FILTER_SIZE']['g']
 
-            filter = LookupBloomFilter(
-                    path=fp,
-                    size=int(sz),
-                    hash_count=int(hc))
+            filter = LookupBloomFilter(path=fp,
+                                       size=int(sz),
+                                       hash_count=int(hc))
             filter.load()
 
             self.graph = filter
-    
 
     def unload(self):
         """Unloads morpheme graph from memory."""
@@ -74,9 +72,5 @@ class MGraph(metaclass=Singleton):
 
         if self.graph is None:
             raise Exception("Initialize graph before querying!")
-        
+
         return self.graph.query(seq)
-
-
-
-
