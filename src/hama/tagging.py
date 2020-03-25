@@ -1,5 +1,5 @@
 import re
-from hama.sequence import (insert, cartesian_product, adjacent_char_cmp)
+from hama.sequence import (cartesian_product, on_bits, split_after_indices)
 from hama.dict import Dict, MGraph
 
 
@@ -46,78 +46,63 @@ def tag_word(word):
         morphemes and corresponding tags.
         Lengths of two lists are the same.
     """
-
-    candidate_ms = candidate_morpheme_seqs(word)
+    best_score = 0
     best_ms = [word]  # Current best morpheme sequence.
     best_ts = ['u']  # Current best tag sequence.
-    best_score = 0
-    for cms in candidate_ms:
-        ct = candidate_tags(cms)
-        tag_seqs = cartesian_product(*ct)
 
-        for ts in tag_seqs:
-            s = score_tag_seq(ts)
-            if s > best_score:
-                best_ms = cms
-                best_ts = ts
-                best_score = s
+    # All possible ways to split the word.
+    num_candidates = (len(word) - 1)**2
+
+    for i in range(num_candidates):
+        score, ms, ts = best_morpheme_seq(word, i, best_score)
+        if score > best_score:
+            best_score = score
+            best_ms = ms
+            best_ts = ts
+
     assert (len(best_ms) == len(best_ts))
     return (best_ms, best_ts)
 
 
-def candidate_morpheme_seqs(word):
-    """Produces every possible partition of word 
-    into candidate morphemes.
+def best_morpheme_seq(word, n, curr_best_score):
+    """Returns the most probable word partition and
+    morpheme tags up until the nth partition of the word.
 
     Args:
-        word (string): String to partition into morphemes.
+        word (str): Whole word.
+        n (int): Which partition scheme (out of 2**(len(word-1))
+        possible candidate partitions the function is scoring.
+        curr_best_score (float): Current best score.
 
     Returns:
-        list: Returns a 2-D array of strings.
-        For example, 메롱is partitioned into [[메롱], [메,롱]].
+        tuple: A tuple containing the following:
+        (float: Current best score.
+         list: Current best word partition.
+         list: Current best morpheme tags.)
     """
+    assert (n <= (len(word) - 1)**2)
 
-    cache = {}
-    partitions = _candidate_morpheme_seqs(cache, word)
+    # Generate nth word partitions, and corresponding
+    # candidate tag sequences.
+    split_indices = on_bits(n)
+    morpheme_seq = split_after_indices(word, split_indices)
+    cts = candidate_tags(morpheme_seq)
+    tag_seqs = cartesian_product(*cts)
 
-    return partitions
+    best_score = curr_best_score
+    best_morpheme_seq = None
+    best_tag_seq = None
 
+    # Iterate through all tag sequences to obtain
+    # highest-scoring tag sequence.
+    for tag_seq in tag_seqs:
+        score = score_tag_seq(tag_seq)
+        if score > best_score:
+            best_score = score
+            best_morpheme_seq = morpheme_seq
+            best_tag_seq = tag_seq
 
-def _candidate_morpheme_seqs(cache, word):
-    """Recursive helper for candidate_morpheme_seqs.
-    Produces every possible partition of word 
-    into candidate morphemes.
-
-    Args:
-        cache (dict): Dictionary for dynamic programming 
-        memoization.
-        word (string): String to partition into morphemes.
-
-    Returns:
-        list: Returns a 2-D array of strings.
-        For example, 메롱is partitioned into [[메롱], [메,롱]].
-    """
-    if len(word) <= 0:
-        return []
-    elif len(word) <= 1:
-        return [[word]]
-
-    # Query dict for memoization.
-    key = word
-    if key in cache:
-        return cache[key]
-    else:
-        head = word[0]
-        tail = word[1:]
-        tail_partitions = _candidate_morpheme_seqs(cache, word[1:])
-        cache[key] = tail_partitions
-        partitions = []
-    for partition in tail_partitions:
-        # Attach head to the first char in partition.
-        partitions.append(insert(partition[1:], 0, head + partition[0]))
-        # Attach head as the first partition.
-        partitions.append(insert(partition, 0, head))
-    return partitions
+    return best_score, best_morpheme_seq, best_tag_seq
 
 
 def score_tag_seq(ts):
