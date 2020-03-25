@@ -28,4 +28,3 @@ def cartesian_product(*lists):
     """
     pairs = list(product(*lists))
     return pairs
-

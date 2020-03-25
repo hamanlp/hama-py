@@ -2,6 +2,7 @@ from BitVector import BitVector
 import mmh3
 import os
 
+
 class LookupBloomFilter():
     """Class representing bloom filters.
 
@@ -14,7 +15,7 @@ class LookupBloomFilter():
         size: Size of the BitVector.
         hash_count: Number of hash functions used by this filter.
     """
-        
+
     def __init__(self, path, size, hash_count):
         """Initialize filter instance."""
         super().__init__()
@@ -29,10 +30,10 @@ class LookupBloomFilter():
     def load(self):
         """Read filter files from disk."""
         if self.bits is None:
-            bit_path = os.path.join(
-                    os.path.dirname(__file__), 'bits', self.path)
+            bit_path = os.path.join(os.path.dirname(__file__), 'bits',
+                                    self.path)
             temp_bv = BitVector(filename=bit_path)
-            self.bits = temp_bv.read_bits_from_file(self.size) 
+            self.bits = temp_bv.read_bits_from_file(self.size)
             temp_bv.close_file_object()
 
     def query(self, item):
@@ -53,8 +54,7 @@ class LookupBloomFilter():
             raise Exception("Initialize filter before querying!")
 
         for i in range(self.hash_count):
-            hash = mmh3.hash(item, i) % self.size 
+            hash = mmh3.hash(item, i) % self.size
             if self.bits[hash] == 0:
                 return False
         return True
-    
