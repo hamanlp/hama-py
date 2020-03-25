@@ -6,7 +6,9 @@ from hama.tagging import (candidate_tags, score_tag_seq,
 def test_candidate_tags():
     assert (candidate_tags([]) == [])
     seq = ['아버지', '가']
-    assert (candidate_tags(seq) == [['nc'], ['ep', 'xp', 'nc', 'jc', 'ec']])
+    ct1 = candidate_tags(seq)
+    assert(set(ct1[0]) == set(['nc']))
+    assert(set(ct1[1]) == set(['ep', 'xp', 'nc', 'jc', 'ec']))
 
 
 def test_score_tag_seq():

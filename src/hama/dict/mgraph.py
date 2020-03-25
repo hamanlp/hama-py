@@ -1,12 +1,14 @@
+import os
+import configparser
 from .singleton import Singleton
-import pandas as pd
+from .bloomfilter import LookupBloomFilter
 
 
 class MGraph(metaclass=Singleton):
     """Class responsible for managing embedded morpheme graphs.
     
     Attributes:
-        graph (obj): Morpheme graph.
+        graph (LookupBloomFilter): Pre-defined morpheme graph.
     """
 
     def __init__(self):
@@ -15,14 +17,31 @@ class MGraph(metaclass=Singleton):
         super().__init__()
         self.graph = None 
 
+    def __getattr__(self, name):
+        """Called when an called attribute does not exist."""
+        return None
+
     def load(self):
         """Loads morpheme graph into memory."""
         if self.graph is None:
-            self.graph = pd.read_csv('mgraph.csv')
-        """list: Pre-defined morpheme graphs.
-        Each row is a possible morpheme sequence. Each sequence 
-        is split into pairs, similar to the output of
-        hama.sequence.similarity._generate_pairs function."""
+
+            config_path = os.path.join(
+                    os.path.dirname(__file__), 'meta/source.ini')
+            config = configparser.ConfigParser()
+            config.read(config_path)
+            
+            fp = config['FILTER_PATH']['g']
+            hc = config['HASH_COUNT']['g']
+            sz = config['FILTER_SIZE']['g']
+
+            filter = LookupBloomFilter(
+                    path=fp,
+                    size=int(sz),
+                    hash_count=int(hc))
+            filter.load()
+
+            self.graph = filter
+    
 
     def unload(self):
         """Unloads morpheme graph from memory."""
@@ -40,14 +59,23 @@ class MGraph(metaclass=Singleton):
         return []
 
     def query(self, seq):
-        """See is seq is in morpheme graph.
+        """See if seq is in morpheme graph.
+
+        Args:
+            seq (str): Morpheme graph string.
     
         Returns: 
             bool: True if found, False if not.
+
+         Raises:
+            Exception if graph was not initialized
+            before with load().
         """
-        entries = self.graph.loc[
-                self.graph.graph.isin([seq])]
-        return len(entries) > 0
+
+        if self.graph is None:
+            raise Exception("Initialize graph before querying!")
+        
+        return self.graph.query(seq)
 
 
 
