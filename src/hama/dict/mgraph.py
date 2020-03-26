@@ -45,17 +45,6 @@ class MGraph(metaclass=Singleton):
         """Unloads morpheme graph from memory."""
         self.graph = None
 
-    def graphs(self):
-        """Returns pre-defined morpheme graphs.
-    
-        Returns: 
-            list: Pre-defined morpheme graph.
-            Each row is a possible morpheme sequence.
-            Each sequence is split into pairs, similar to
-            the output of _generate_pairs function.
-        """
-        return []
-
     def query(self, seq):
         """See if seq is in morpheme graph.
 
