@@ -1,4 +1,4 @@
-from BitVector import BitVector
+from .bitarray import BitArray
 import mmh3
 import os
 
@@ -10,9 +10,9 @@ class LookupBloomFilter():
     dictionaries and graphs.
 
     Attributes:
-        bits: BitVector object representing the filter.
+        bits: BitArray object representing the filter.
         path: Path to byte array on disk.
-        size: Size of the BitVector.
+        size: Size of the BitArray.
         hash_count: Number of hash functions used by this filter.
     """
 
@@ -32,9 +32,8 @@ class LookupBloomFilter():
         if self.bits is None:
             bit_path = os.path.join(os.path.dirname(__file__), 'bits',
                                     self.path)
-            temp_bv = BitVector(filename=bit_path)
-            self.bits = temp_bv.read_bits_from_file(self.size)
-            temp_bv.close_file_object()
+            self.bits = BitArray(self.size)
+            self.bits.read(bit_path)
 
     def query(self, item):
         """Queries item from the filter.
@@ -55,6 +54,6 @@ class LookupBloomFilter():
 
         for i in range(self.hash_count):
             hash = mmh3.hash(item, i) % self.size
-            if self.bits[hash] == 0:
+            if self.bits.at(hash) == 0:
                 return False
         return True
