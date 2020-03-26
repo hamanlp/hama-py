@@ -1,13 +1,12 @@
 attrs==19.3.0
 BitVector==3.4.9
 coverage==5.0.4
--e git+https://github.com/hamanlp/hama-py.git@0b6384bf41e272081df2a3c2c226860412e9eab5#egg=hama
+-e git+https://github.com/hamanlp/hama-py.git@5dcc90eee68d8f6f863e851cfa6c13fb98409fd7#egg=hama
 importlib-metadata==1.5.0
 mmh3==2.5.1
 more-itertools==8.2.0
 numpy==1.18.1
 packaging==20.3
-pandas==1.0.1
 pluggy==0.13.1
 py==1.8.1
 pyparsing==2.4.6
