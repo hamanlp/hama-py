@@ -5,6 +5,7 @@ from hama.dict import MGraph
 def test_query():
     graph = MGraph()
 
+    graph.unload()
     with pytest.raises(Exception):
         graph.query('')
 
@@ -13,11 +14,13 @@ def test_query():
     assert (graph.query('nbjc') == True)
     assert (graph.query('xxx') == False)
 
+
 def test_wrong_attr():
     graph = MGraph()
-    assert(graph.booboo == None)
+    assert (graph.booboo == None)
+
 
 def test_unload():
     graph = MGraph()
     graph.unload()
-    assert(graph.dict == None)
+    assert (graph.dict == None)
