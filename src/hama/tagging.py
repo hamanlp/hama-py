@@ -51,8 +51,7 @@ def tag_word(word):
     best_ts = ['u']  # Current best tag sequence.
 
     # All possible ways to split the word.
-    num_candidates = (len(word) - 1)**2
-
+    num_candidates = 2**(len(word) - 1)
     for i in range(num_candidates):
         score, ms, ts = best_morpheme_seq(word, i, best_score)
         if score > best_score:
@@ -80,7 +79,7 @@ def best_morpheme_seq(word, n, curr_best_score):
          list: Current best word partition.
          list: Current best morpheme tags.)
     """
-    assert (n <= (len(word) - 1)**2)
+    assert (n <= 2**(len(word) - 1))
 
     # Generate nth word partitions, and corresponding
     # candidate tag sequences.
@@ -97,6 +96,7 @@ def best_morpheme_seq(word, n, curr_best_score):
     # highest-scoring tag sequence.
     for tag_seq in tag_seqs:
         score = score_tag_seq(tag_seq)
+
         if score > best_score:
             best_score = score
             best_morpheme_seq = morpheme_seq
@@ -116,8 +116,9 @@ def score_tag_seq(ts):
     """
     ts_string = "".join(ts)
     no_unknowns = [e for e in ts if e != 'u']
+
     if MGraph().query(ts_string):
-        score = 1 + len(no_unknowns) / len(ts)
+        score = 1 + 1.0 / len(ts)
     else:
         score = len(no_unknowns) / len(ts)
     return score
