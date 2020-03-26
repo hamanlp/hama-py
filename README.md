@@ -1,5 +1,5 @@
 # hama-py
-🦛 파이썬 형태소 분석기. Python Korean Morpheme Analyzer
+🦛 파이썬 형태소 분석기. Python **Ha**ngul **M**orpheme **A**nalyzer
 
 ## Formatting
 ```
