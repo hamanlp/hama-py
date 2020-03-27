@@ -5,15 +5,22 @@ class BitArray():
     """Class representing large bit arrays.
 
     Arrtibutes:
+        BUFF_SIZE: File read buffer size, in bytes.
+        ELEM_SIZE: Each int stored internally is 32 bits, or 4 bytes.
+
         bits: Internal bit array.
         size: Bit array size, in bits.
     """
+
+    BUFF_SIZE = 256  # In bytes.
+    ELEM_SIZE = 4  # In bytes.
 
     def __init__(self, size):
         """Initialize BitArray instance."""
         super().__init__()
         self.size = size
-        self.bits = [0] * math.ceil((self.size / 32))
+        bits_per_elem = BitArray.ELEM_SIZE * 8
+        self.bits = [0] * math.ceil(self.size / bits_per_elem)
 
     def read(self, path):
         """Read bit array from file.
@@ -22,12 +29,26 @@ class BitArray():
             file (str): File path.
         """
         with open(path, "rb") as f:
+            bs = BitArray.BUFF_SIZE
+            es = BitArray.ELEM_SIZE
+
+            elems_per_read = bs // es
+
             counter = 0
-            byte = f.read(4)
+            byte = f.read(bs)
             while byte:
-                self.bits[counter] = int.from_bytes(byte, byteorder='big')
-                counter += 1
-                byte = f.read(4)
+                for i in range(elems_per_read):
+                    # Take a es-szied slice out of bs bytes.
+                    start = i * es
+                    end = min(start + es, len(byte))
+                    byte_slice = byte[start:end]
+                    if byte_slice == b'':
+                        break
+                    bits_index = counter + i
+                    self.bits[bits_index] = int.from_bytes(byte_slice,
+                                                           byteorder='big')
+                counter += elems_per_read
+                byte = f.read(bs)
 
     def at(self, index):
         """Returns bit at index
