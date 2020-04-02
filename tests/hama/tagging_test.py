@@ -46,3 +46,7 @@ def test_tag():
     text = '밥주세요.'
     tags = hama.tag(text, zipped=True)
     print(tags)
+
+    text = '프론트엔드 에서도 돌아갑니다'
+    tags = hama.tag(text)
+    print(tags)
