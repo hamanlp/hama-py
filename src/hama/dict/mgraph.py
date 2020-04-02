@@ -1,6 +1,6 @@
 import os
 import configparser
-from .singleton import Singleton
+from hama.langutils import Singleton
 from .bloomfilter import LookupBloomFilter
 
 

@@ -1,6 +1,7 @@
 import re
 from hama.sequence import (cartesian_product, on_bits, split_after_indices)
-from hama.dict import Dict, MGraph
+from hama.dict import Dict
+from hama.hmm import TagHMM
 
 
 def tag(text, zipped=False):
@@ -18,10 +19,8 @@ def tag(text, zipped=False):
         list: list containing tuples in the form of:
         (morpheme, tag).
     """
-    dic = Dict()
-    dic.load()
-    mgraph = MGraph()
-    mgraph.load()
+    Dict().load()
+    TagHMM().load()
 
     morphemes = []
     tags = []
@@ -114,13 +113,36 @@ def score_tag_seq(ts):
     Returns:
         float: Tag sequence likeliness score.
     """
-    ts_string = "".join(ts)
-    no_unknowns = [e for e in ts if e != 'u']
+    no_unknowns = []
 
-    if MGraph().query(ts_string):
-        score = 1 + 1.0 / len(ts)
+    cum_prob = 0
+    count = 0
+    for i in range(len(ts)):
+        t = ts[i]
+
+        # Collect non-unknowns.
+        if t != 'u':
+            no_unknowns.append(t)
+
+        if i == 0:
+            continue
+
+        prev = ts[i - 1]
+        curr = ts[i]
+        if prev != 'u' and curr != 'u':
+            cum_prob += TagHMM().query(prev, curr)
+            count += 1
+
+    #less_unknown_score = len(no_unknowns)/len(ts)
+    unknowns = (1 - len(no_unknowns) / len(ts)) * 1.5
+
+    if count > 0:
+        score = cum_prob / count - unknowns
     else:
-        score = len(no_unknowns) / len(ts)
+        score = -1
+
+    score += 1 / len(ts)
+
     return score
 
 
