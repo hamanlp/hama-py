@@ -120,6 +120,7 @@ def affixes(text):
     filtered = [t[0] for t in tags if t[1] in ['xp', 'xs']]
     return filtered
 
+
 def orthotones(text):
     """Extract orthotones (독립언) from text.
 
