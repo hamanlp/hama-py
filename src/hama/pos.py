@@ -2,7 +2,7 @@ from .tagging import tag
 
 
 def nouns(text):
-    """Extract nouns from text.
+    """Extract nouns (체언) from text.
 
     Args:
         text (str): Text to analyze.
@@ -17,7 +17,7 @@ def nouns(text):
 
 
 def predicates(text):
-    """Extract predicates from text.
+    """Extract predicates (용언) from text.
 
     Args:
         text (str): Text to analyze.
