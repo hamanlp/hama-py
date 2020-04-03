@@ -119,3 +119,17 @@ def affixes(text):
     tags = tag(text, zipped=true)
     filtered = [t[0] for t in tags if t[1] in ['xp', 'xs']]
     return filtered
+
+def orthotones(text):
+    """Extract orthotones (독립언) from text.
+
+    args:
+        text (str): text to analyze.
+        
+    returns:
+        list: list of morphemes tagged as orthotones.
+
+    """
+    tags = tag(text, zipped=true)
+    filtered = [t[0] for t in tags if t[1] == 'ii']
+    return filtered
