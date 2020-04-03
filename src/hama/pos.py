@@ -77,7 +77,7 @@ def foreigns():
 
 
 def postpositions(text):
-    """Extract postpositions (관계언) from text.
+    """Extract postpositions (관계언/조사) from text.
 
     args:
         text (str): text to analyze.
@@ -92,7 +92,7 @@ def postpositions(text):
 
 
 def suffixes(text):
-    """Extract suffixes (조사) from text.
+    """Extract suffixes (어미) from text.
 
     args:
         text (str): text to analyze.
