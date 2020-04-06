@@ -118,6 +118,8 @@ def score_tag_seq(ts):
     cum_prob = 0
     count = 0
     for i in range(len(ts)):
+        count += 1
+
         t = ts[i]
 
         # Collect non-unknowns.
@@ -131,17 +133,21 @@ def score_tag_seq(ts):
         curr = ts[i]
         if prev != 'u' and curr != 'u':
             cum_prob += TagHMM().query(prev, curr)
-            count += 1
 
     #less_unknown_score = len(no_unknowns)/len(ts)
-    unknowns = (1 - len(no_unknowns) / len(ts)) * 1.5
+    #unknowns = (1 - len(no_unknowns) / len(ts)) * 1.5
 
-    if count > 0:
-        score = cum_prob / count - unknowns
-    else:
-        score = -1
+    score = cum_prob / count
 
-    score += 1 / len(ts)
+    knowns = len(no_unknowns)
+    unknowns = len(ts) - knowns
+    known_ratio = knowns / len(ts)
+    unknown_ratio = unknowns / len(ts)
+
+    score -= unknown_ratio
+    score += known_ratio
+
+    score /= len(ts)
 
     return score
 
