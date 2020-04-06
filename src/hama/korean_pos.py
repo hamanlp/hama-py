@@ -1,4 +1,4 @@
-from pos import *
+from .pos import *
 
 
 def ches(text):
