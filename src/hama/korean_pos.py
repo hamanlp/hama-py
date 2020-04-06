@@ -66,7 +66,7 @@ def jos(text):
         list: list of morphemes tagged as postpositions.
 
     """
-    return suffixes(text)
+    return postpositions(text)
 
 
 def eoms(text):
@@ -79,7 +79,7 @@ def eoms(text):
         list: list of morphemes tagged as suffixes.
 
     """
-    return
+    return suffixes(text)
 
 
 def jubs(text):
