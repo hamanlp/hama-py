@@ -86,7 +86,7 @@ def postpositions(text):
         list: list of morphemes tagged as postpositions.
 
     """
-    tags = tag(text, zipped=true)
+    tags = tag(text, zipped=True)
     filtered = [t[0] for t in tags if t[1] in ['jc', 'jx', 'jp']]
     return filtered
 
@@ -101,7 +101,7 @@ def suffixes(text):
         list: list of morphemes tagged as suffixes.
 
     """
-    tags = tag(text, zipped=true)
+    tags = tag(text, zipped=True)
     filtered = [t[0] for t in tags if t[1] in ['ep', 'ec', 'et', 'ef']]
     return filtered
 
@@ -116,7 +116,7 @@ def affixes(text):
         list: list of morphemes tagged as affixes.
 
     """
-    tags = tag(text, zipped=true)
+    tags = tag(text, zipped=True)
     filtered = [t[0] for t in tags if t[1] in ['xp', 'xs']]
     return filtered
 
@@ -131,6 +131,6 @@ def orthotones(text):
         list: list of morphemes tagged as orthotones.
 
     """
-    tags = tag(text, zipped=true)
+    tags = tag(text, zipped=True)
     filtered = [t[0] for t in tags if t[1] == 'ii']
     return filtered
