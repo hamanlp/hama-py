@@ -18,18 +18,18 @@ def test_score_tag_seq():
 
 def test_best_morpheme_seq():
     with pytest.raises(Exception):
-        best_morpheme_seq('', 1, 0, 'INIT', False)
+        best_morpheme_seq('', 1, 0, 'BEGIN', False)
 
     word = '아버지가'
-    bms1 = best_morpheme_seq(word, 0, 0, 'INIT', True)
+    bms1 = best_morpheme_seq(word, 0, 0, 'BEGIN', True)
     assert (bms1[1] == None)
     assert (bms1[2] == None)
 
-    bms2 = best_morpheme_seq(word, 4, 0, 'INIT', True)
+    bms2 = best_morpheme_seq(word, 4, 0, 'BEGIN', True)
     assert (bms2[1] == ['아버지', '가'])
     assert (bms2[2] == ('nc', 'jc'))
 
-    bms3 = best_morpheme_seq(word, 4, 0, 'INIT', False)
+    bms3 = best_morpheme_seq(word, 4, 0, 'BEGIN', False)
     assert (bms3[1] == ['아버지', '가'])
     assert (bms3[2] == ('nc', 'jc'))
 
