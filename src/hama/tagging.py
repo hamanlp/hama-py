@@ -1,5 +1,6 @@
 import re
-from hama.sequence import (cartesian_product, on_bits, split_after_indices)
+from hama.sequence import (insert, cartesian_product, on_bits,
+                           split_after_indices)
 from hama.dict import Dict
 from hama.hmm import TagHMM
 
@@ -24,21 +25,33 @@ def tag(text, zipped=False):
 
     morphemes = []
     tags = []
+
     words = re.findall(r"[\w']+|[.,!?;]", text)
-    for word in words:
-        w_morphemes, w_tags = tag_word(word)
+    prev_tag = 'BEGIN'
+
+    for i in range(len(words)):
+        word = words[i]
+
+        w_morphemes, w_tags = tag_word(word, prev_tag, (i == len(words) - 1))
+        prev_tag = w_tags[-1]
+
         morphemes.extend(w_morphemes)
         tags.extend(w_tags)
+
     if zipped:
         return list(zip(morphemes, tags))
     return (morphemes, tags)
 
 
-def tag_word(word):
+def tag_word(word, prev_tag, is_last):
     """Produces POS tags for each morpheme in a single word.
 
     Args:
         word (str): Word to separate into morphemes and tag.
+        prev_tag (str): Last tag of the word that came before. 
+        'BEGIN' if first word.
+        is_last (bool): Whether the word is the last word in the
+        sentence.
 
     Returns:
         tuple: tuple containing two lists: 
@@ -52,7 +65,8 @@ def tag_word(word):
     # All possible ways to split the word.
     num_candidates = 2**(len(word) - 1)
     for i in range(num_candidates):
-        score, ms, ts = best_morpheme_seq(word, i, best_score)
+        score, ms, ts = best_morpheme_seq(word, i, best_score, prev_tag,
+                                          is_last)
         if score > best_score:
             best_score = score
             best_ms = ms
@@ -62,7 +76,7 @@ def tag_word(word):
     return (best_ms, best_ts)
 
 
-def best_morpheme_seq(word, n, curr_best_score):
+def best_morpheme_seq(word, n, curr_best_score, prev_tag, is_last):
     """Returns the most probable word partition and
     morpheme tags up until the nth partition of the word.
 
@@ -71,6 +85,10 @@ def best_morpheme_seq(word, n, curr_best_score):
         n (int): Which partition scheme (out of 2**(len(word-1))
         possible candidate partitions the function is scoring.
         curr_best_score (float): Current best score.
+        prev_tag (str): Last tag of the word that came before. 
+        'BEGIN' if first word.
+        is_last (bool): Whether the word is the last word in the
+        sentence.
 
     Returns:
         tuple: A tuple containing the following:
@@ -94,7 +112,13 @@ def best_morpheme_seq(word, n, curr_best_score):
     # Iterate through all tag sequences to obtain
     # highest-scoring tag sequence.
     for tag_seq in tag_seqs:
-        score = score_tag_seq(tag_seq)
+
+        if is_last:
+            eval_tag = (prev_tag, *tag_seq)
+        else:
+            eval_tag = (prev_tag, *tag_seq, 'END')
+
+        score = score_tag_seq(eval_tag)
 
         if score > best_score:
             best_score = score
