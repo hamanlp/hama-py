@@ -36,19 +36,19 @@ def test_best_morpheme_seq():
 
 def test_tag_word():
     word = '아버지가'
-    #tags = tag_word(word)
-    #print(tags)
+    tags = tag_word(word, 'BEGIN', True)
+    assert(tags[1] == ('nc', 'jc'))
 
 
 def test_tag():
     text = '돼지가 아니라 하마입니다.'
     tags = hama.tag(text)
-    print(tags)
+    #print(tags)
 
     text = '밥주세요.'
     tags = hama.tag(text, zipped=True)
-    print(tags)
+    #print(tags)
 
     text = '프론트엔드 에서도 돌아갑니다'
     tags = hama.tag(text)
-    print(tags)
+    #print(tags)
