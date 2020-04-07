@@ -1,8 +1,7 @@
 import pytest
-import hama
+from hama.tagging import nouns
 
 
 def test_nouns():
-    text = "버스 타고 가자."
-    print(hama.tag(text))
-    #assert (hama.nouns(text) == ['버스'])
+    text = "복실복실 푸들"
+    assert (nouns(text) == ['푸들'])
