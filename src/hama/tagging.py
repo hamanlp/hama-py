@@ -40,7 +40,7 @@ def tag(text, zipped=False):
 
     if zipped:
         return list(zip(morphemes, tags))
-    return (morphemes, tags)
+    return (morphemes, list(tags))
 
 
 def tag_word(word, prev_tag, is_last):
