@@ -1,7 +1,12 @@
 # hama-py
-🦛 파이썬 형태소 분석기. Python **Ha**ngul **M**orpheme **A**nalyzer
+🦛 파이썬 한글 처리 라이브러리. Python **Ha**ngul **M**orphology **A**nalyzer
 
 [![Build Status](https://travis-ci.com/hamanlp/hama-py.svg?token=5mkYfZrrwLybLEcey5zk&branch=master)](https://travis-ci.com/hamanlp/hama-py)
+
+
+## Features
+* 텍스트 전처리 (Text preprocessing)
+    * 형태소 분석 (Morpheme analysis)
 
 
 ## Testing
