@@ -37,7 +37,7 @@ def test_best_morpheme_seq():
 def test_tag_word():
     word = '아버지가'
     tags = tag_word(word, 'BEGIN', True)
-    assert(tags[1] == ('nc', 'jc'))
+    assert (tags[1] == ('nc', 'jc'))
 
 
 def test_tag():
