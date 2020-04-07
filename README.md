@@ -1,5 +1,5 @@
 # hama-py
-🦛 파이썬 한글 처리 라이브러리. Python **Ha**ngul **M**orphology **A**nalyzer
+🦛 파이썬 한글 처리 라이브러리. Python **Ha**ngul **M**orphological **A**nalyzer
 
 [![Build Status](https://travis-ci.com/hamanlp/hama-py.svg?token=5mkYfZrrwLybLEcey5zk&branch=master)](https://travis-ci.com/hamanlp/hama-py)
 
