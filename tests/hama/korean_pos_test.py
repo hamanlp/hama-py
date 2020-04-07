@@ -20,3 +20,18 @@ def test_soos():
 def test_doks():
     text = ""
     assert (hama.orthotones(text) == hama.doks(text))
+
+
+def test_jos():
+    text = ""
+    assert (hama.postpositions(text) == hama.jos(text))
+
+
+def test_eoms():
+    text = ""
+    assert (hama.suffixes(text) == hama.eoms(text))
+
+
+def test_jubs():
+    text = ""
+    assert (hama.affixes(text) == hama.jubs(text))
