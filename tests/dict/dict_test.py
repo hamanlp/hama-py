@@ -1,5 +1,5 @@
 import pytest
-from hama.dict import Dict
+from hama.tagging.dict import Dict
 
 
 def test_query():

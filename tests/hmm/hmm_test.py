@@ -1,5 +1,5 @@
 import pytest
-from hama.hmm import TagHMM
+from hama.tagging.hmm import TagHMM
 
 
 def test_query():

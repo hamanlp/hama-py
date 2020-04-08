@@ -1,8 +1,8 @@
 import re
-from hama.sequence import (insert, cartesian_product, on_bits,
+from .sequence import (insert, cartesian_product, on_bits,
                            split_after_indices)
-from hama.dict import Dict
-from hama.hmm import TagHMM
+from .dict import Dict
+from .hmm import TagHMM
 
 
 def tag(text, zipped=False):

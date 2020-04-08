@@ -1,7 +1,7 @@
 import pytest
-import hama
-from hama.tagging import (candidate_tags, score_tag_seq, best_morpheme_seq,
-                          tag_word)
+from hama.tagging import tag
+from hama.tagging.tagging import (candidate_tags, score_tag_seq, best_morpheme_seq,
+        tag_word)
 
 
 def test_candidate_tags():
@@ -42,13 +42,13 @@ def test_tag_word():
 
 def test_tag():
     text = '돼지가 아니라 하마입니다.'
-    tags = hama.tag(text)
+    tags = tag(text)
     #print(tags)
 
     text = '밥주세요.'
-    tags = hama.tag(text, zipped=True)
+    tags = tag(text, zipped=True)
     #print(tags)
 
     text = '프론트엔드 에서도 돌아갑니다'
-    tags = hama.tag(text)
+    tags = tag(text)
     #print(tags)

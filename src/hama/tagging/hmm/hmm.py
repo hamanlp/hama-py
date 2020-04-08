@@ -1,6 +1,6 @@
 import os
 import json
-from hama.langutils import Singleton
+from hama.tagging.langutils import Singleton
 
 
 class TagHMM(metaclass=Singleton):

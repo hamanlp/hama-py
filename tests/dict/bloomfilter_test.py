@@ -1,5 +1,5 @@
 import pytest
-from hama.dict.bloomfilter import LookupBloomFilter
+from hama.tagging.dict.bloomfilter import LookupBloomFilter
 
 
 def test_query():
