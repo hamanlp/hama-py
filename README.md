@@ -7,6 +7,7 @@
 ## Features
 * 텍스트 전처리 (Text preprocessing)
     * 형태소 분석 (Morpheme analysis)
+    * 품사 태깅 (Part-of-speech tagging)
 
 
 ## Testing
