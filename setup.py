@@ -1,3 +1,21 @@
 from setuptools import setup, find_packages
 
-setup(name="hama", package_dir={'': 'src'}, packages=find_packages(where='src'))
+setup(
+        name="hama", 
+        version="1.0.0",
+
+        description="Korean natural language toolkit",
+        long_description=README,
+        long_description_content_type="text/markdown",
+        url="https://github.com/hamanlp/hama-py",
+
+        author="Seongmin Park",
+        author_email="llov0708@gmail.com",
+
+        license="MIT",
+
+        package_dir={'': 'src'}, 
+        packages=find_packages(where='src')
+
+        include_package_data=True
+)

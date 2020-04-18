@@ -1,1 +1,5 @@
 graft src
+
+include README.md
+include src/hama/tagging/dict/bits/*.bits
+include src/hama/tagging/hmm/resource/hmm.json
