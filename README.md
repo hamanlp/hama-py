@@ -11,6 +11,16 @@
     * 형태소 분석 (Morpheme analysis)
     * 품사 태깅 (Part-of-speech tagging)
 
+## License
+개발 가이드의 [라이센스](https://www.hamanlp.org/docs/license/) 문서를 참조하세요.
+
+## Installation
+```
+pip install hama
+```
+
+## Usage
+[개발 가이드](https://www.hamanlp.org/docs/initialization)에 하마의 여러 기능에 대한 사용법이 소개되어 있습니다. 
 
 ## Testing
 ```
