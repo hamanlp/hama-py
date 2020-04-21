@@ -4,6 +4,8 @@
 [![Build Status](https://travis-ci.org/hamanlp/hama-py.svg?branch=master)](https://travis-ci.org/hamanlp/hama-py)
 
 
+![hama logo](https://raw.githubusercontent.com/hamanlp/hama-py/master/logo.png)
+
 ## Features
 * 텍스트 전처리 (Text preprocessing)
     * 형태소 분석 (Morpheme analysis)
