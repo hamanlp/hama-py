@@ -8,6 +8,6 @@ python:
     - "3.8"
     - "nightly"  # nightly build
 install:
-    - pip install pytest
+    - pip install -r ci-requirements.txt
 script:
     - pytest
