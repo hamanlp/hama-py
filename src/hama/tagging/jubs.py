@@ -1,4 +1,4 @@
-from ..tagging import tag
+from .tagging import tag
 
 
 def affixes(text):
