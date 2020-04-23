@@ -1,7 +1,7 @@
 import pytest
 from hama.tagging import tag
-from hama.tagging.tagging import (candidate_tags, score_tag_seq, best_morpheme_seq,
-        tag_word)
+from hama.tagging.tagging import (candidate_tags, score_tag_seq,
+                                  best_morpheme_seq, tag_word)
 
 
 def test_candidate_tags():
