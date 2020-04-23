@@ -1,4 +1,10 @@
 from .tagging import tag
-from .pos import (nouns, predicates, symbols, modifiers, foreigns,
-                  postpositions, suffixes, affixes, orthotones)
-from .korean_pos import (ches, yongs, soos, doks, jos, eoms, jubs)
+from .ches import *
+from .yongs import *
+from .soos import *
+from .doks import *
+from .jos import *
+from .eoms import *
+from .jubs import *
+from .foreigns import *
+from .symbols import *
