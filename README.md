@@ -15,7 +15,7 @@
 개발 가이드의 [라이센스](https://www.hamanlp.org/docs/license/) 문서를 참조하세요.
 
 ## Installation
-Python 3.3+ 를 지원합니다.
+Python 3.6+ 를 지원합니다.
 ```
 pip install hama
 ```
