@@ -1,6 +1,7 @@
 import pytest
 from hama.tagging import tag
 
+
 def test_tag():
     text = '돼지가 아니라 하마입니다.'
     tags = tag(text)
