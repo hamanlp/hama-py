@@ -4,7 +4,7 @@ from .dict import Dict
 from .hmm import TagHMM
 
 
-def tag(text, zipped=False):
+def tag(text, zipped=False, callback=None):
     """Produces POS tags for each morpheme in a text.
 
     Args:
@@ -14,6 +14,7 @@ def tag(text, zipped=False):
         If False, returns a tuple with two lists: morphemes and 
         corresponding tags. Lengths of two lists are the same.
         Defaulted to False.
+        callback (func): Optional callback. Result of this function         is supplied as parameter.
 
     Returns:
         list: list containing tuples in the form of:
@@ -37,9 +38,16 @@ def tag(text, zipped=False):
         morphemes.extend(w_morphemes)
         tags.extend(w_tags)
 
-    if zipped:
-        return list(zip(morphemes, tags))
-    return (morphemes, list(tags))
+    if callback is None:
+        if zipped:
+            return list(zip(morphemes, tags))
+        else:
+            return (morphemes, list(tags))
+    else:
+        if zipped:
+            callback(list(zip(morphemes, tags)))
+        else:
+            callback((morphemes, list(tags)))
 
 
 def tag_word(word, prev_tag, is_last):
