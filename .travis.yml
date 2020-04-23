@@ -5,6 +5,7 @@ python:
     - "3.8"
     - "nightly"  # nightly build
 install:
-    - pip install -r ci-requirements.txt
+    - "pip install -r ci-requirements.txt"
+    - "python setup.py install"
 script:
     - pytest
