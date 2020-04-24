@@ -17,4 +17,5 @@ setup(name="hama",
       package_dir={'': 'src'},
       packages=find_packages(where='src'),
       include_package_data=True,
-      python_requires='>=3.6')
+      python_requires='>=3.6',
+      install_requires=['mmh3'])
