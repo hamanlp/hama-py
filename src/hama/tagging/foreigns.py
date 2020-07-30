@@ -12,5 +12,5 @@ def foreigns():
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] == 'f']
+    filtered = [t[0] for t in tags if t[1] == "f"]
     return filtered

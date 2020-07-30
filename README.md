@@ -40,6 +40,6 @@ python profile/timing.py
 
 ## Formatting
 ```
-yapf -i -r -vv .
+black src/
 ```
 

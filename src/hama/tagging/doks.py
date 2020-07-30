@@ -12,7 +12,7 @@ def orthotones(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] == 'ii']
+    filtered = [t[0] for t in tags if t[1] == "ii"]
     return filtered
 
 
@@ -41,5 +41,5 @@ def ii(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] == 'ii']
+    filtered = [t[0] for t in tags if t[1] == "ii"]
     return filtered

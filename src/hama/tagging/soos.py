@@ -12,7 +12,7 @@ def modifiers(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] in ['mm', 'ma']]
+    filtered = [t[0] for t in tags if t[1] in ["mm", "ma"]]
     return filtered
 
 
@@ -40,7 +40,7 @@ def mm(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] == 'mm']
+    filtered = [t[0] for t in tags if t[1] == "mm"]
     return filtered
 
 
@@ -55,5 +55,5 @@ def ma(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] == 'ma']
+    filtered = [t[0] for t in tags if t[1] == "ma"]
     return filtered

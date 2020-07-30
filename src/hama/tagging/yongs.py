@@ -12,7 +12,7 @@ def predicates(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] in ['pv', 'pa', 'px']]
+    filtered = [t[0] for t in tags if t[1] in ["pv", "pa", "px"]]
     return filtered
 
 
@@ -41,7 +41,7 @@ def pv(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] == 'pv']
+    filtered = [t[0] for t in tags if t[1] == "pv"]
     return filtered
 
 
@@ -56,5 +56,5 @@ def pa(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] == 'pa']
+    filtered = [t[0] for t in tags if t[1] == "pa"]
     return filtered

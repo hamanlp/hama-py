@@ -24,12 +24,11 @@ class TagHMM(metaclass=Singleton):
     def load(self):
         """Loads hmm into memory."""
         if self.hmm is None:
-            hmm_path = os.path.join(os.path.dirname(__file__),
-                                    'resource/hmm.json')
+            hmm_path = os.path.join(os.path.dirname(__file__), "resource/hmm.json")
             with open(hmm_path) as f:
                 data = json.load(f)
-                self.hmm = data['hmm']
-                self.t2i = data['t2i']
+                self.hmm = data["hmm"]
+                self.t2i = data["t2i"]
 
     def unload(self):
         """Unloads hmm from memory."""
@@ -54,8 +53,7 @@ class TagHMM(metaclass=Singleton):
             raise Exception("Initialize HMM before querying!")
 
         if t1 not in self.t2i or t2 not in self.t2i:
-            raise Exception(
-                f"One of the following tags was invalid: [{t1}, {t2}]")
+            raise Exception(f"One of the following tags was invalid: [{t1}, {t2}]")
 
         t1_i = self.t2i[t1]
         t2_i = self.t2i[t2]

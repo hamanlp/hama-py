@@ -7,21 +7,21 @@ def test_query():
 
     hmm.unload()
     with pytest.raises(Exception):
-        hmm.query('s', 's')
+        hmm.query("s", "s")
 
     hmm.load()
     with pytest.raises(Exception):
-        hmm.query('gibberish', 'tag')
-    hmm.query('s', 's')
+        hmm.query("gibberish", "tag")
+    hmm.query("s", "s")
 
 
 def test_wrong_attr():
     hmm = TagHMM()
-    assert (hmm.foofoo == None)
+    assert hmm.foofoo == None
 
 
 def test_unload():
     hmm = TagHMM()
     hmm.unload()
-    assert (hmm.hmm == None)
-    assert (hmm.t2i == None)
+    assert hmm.hmm == None
+    assert hmm.t2i == None

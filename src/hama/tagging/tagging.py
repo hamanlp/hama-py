@@ -1,5 +1,5 @@
 import re
-from .sequence import (insert, cartesian_product, on_bits, split_after_indices)
+from .sequence import insert, cartesian_product, on_bits, split_after_indices
 from .dict import Dict
 from .hmm import TagHMM
 
@@ -27,7 +27,7 @@ def tag(text, zipped=False, callback=None):
     tags = []
 
     words = re.findall(r"[\w']+|[.,!?;]", text)
-    prev_tag = 'BEGIN'
+    prev_tag = "BEGIN"
 
     for i in range(len(words)):
         word = words[i]
@@ -67,19 +67,18 @@ def tag_word(word, prev_tag, is_last):
     """
     best_score = 0
     best_ms = [word]  # Current best morpheme sequence.
-    best_ts = ['u']  # Current best tag sequence.
+    best_ts = ["u"]  # Current best tag sequence.
 
     # All possible ways to split the word.
-    num_candidates = 2**(len(word) - 1)
+    num_candidates = 2 ** (len(word) - 1)
     for i in range(num_candidates):
-        score, ms, ts = best_morpheme_seq(word, i, best_score, prev_tag,
-                                          is_last)
+        score, ms, ts = best_morpheme_seq(word, i, best_score, prev_tag, is_last)
         if score > best_score:
             best_score = score
             best_ms = ms
             best_ts = ts
 
-    assert (len(best_ms) == len(best_ts))
+    assert len(best_ms) == len(best_ts)
     return (best_ms, best_ts)
 
 
@@ -103,7 +102,7 @@ def best_morpheme_seq(word, n, curr_best_score, prev_tag, is_last):
          list: Current best word partition.
          list: Current best morpheme tags.)
     """
-    assert (n <= 2**(len(word) - 1))
+    assert n <= 2 ** (len(word) - 1)
 
     # Generate nth word partitions, and corresponding
     # candidate tag sequences.
@@ -123,7 +122,7 @@ def best_morpheme_seq(word, n, curr_best_score, prev_tag, is_last):
         if is_last:
             eval_tag = (prev_tag, *tag_seq)
         else:
-            eval_tag = (prev_tag, *tag_seq, 'END')
+            eval_tag = (prev_tag, *tag_seq, "END")
 
         score = score_tag_seq(eval_tag)
 
@@ -154,7 +153,7 @@ def score_tag_seq(ts):
         t = ts[i]
 
         # Collect non-unknowns.
-        if t != 'u':
+        if t != "u":
             no_unknowns.append(t)
 
         if i == 0:
@@ -162,11 +161,11 @@ def score_tag_seq(ts):
 
         prev = ts[i - 1]
         curr = ts[i]
-        if prev != 'u' and curr != 'u':
+        if prev != "u" and curr != "u":
             cum_prob += TagHMM().query(prev, curr)
 
-    #less_unknown_score = len(no_unknowns)/len(ts)
-    #unknowns = (1 - len(no_unknowns) / len(ts)) * 1.5
+    # less_unknown_score = len(no_unknowns)/len(ts)
+    # unknowns = (1 - len(no_unknowns) / len(ts)) * 1.5
 
     score = cum_prob / count
 
@@ -203,6 +202,6 @@ def candidate_tags(ms):
         if len(m_tags) > 0:
             tags.append(m_tags)
         else:
-            tags.append(['u'])
-    assert (len(ms) == len(tags))
+            tags.append(["u"])
+    assert len(ms) == len(tags)
     return tags

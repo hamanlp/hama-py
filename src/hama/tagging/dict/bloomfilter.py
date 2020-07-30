@@ -3,7 +3,7 @@ import mmh3
 import os
 
 
-class LookupBloomFilter():
+class LookupBloomFilter:
     """Class representing bloom filters.
 
     Bloom filters will represent morpheme 
@@ -30,8 +30,7 @@ class LookupBloomFilter():
     def load(self):
         """Read filter files from disk."""
         if self.bits is None:
-            bit_path = os.path.join(os.path.dirname(__file__), 'bits',
-                                    self.path)
+            bit_path = os.path.join(os.path.dirname(__file__), "bits", self.path)
             self.bits = BitArray(self.size)
             self.bits.read(bit_path)
 

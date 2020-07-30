@@ -1,3 +1,8 @@
-import hama
+from hama.tagging import tag
+from hama.tagging.dict import Dict
 
-hama.tag('푸들은 많이 귀엽다')
+print(tag("a다르고 uh다르다", zipped=True))
+
+dict = Dict()
+dict.load()
+print(dict.query("자동차"))
