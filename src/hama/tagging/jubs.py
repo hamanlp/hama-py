@@ -12,7 +12,7 @@ def affixes(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] in ['xp', 'xs']]
+    filtered = [t[0] for t in tags if t[1] in ["xp", "xs"]]
     return filtered
 
 
@@ -41,7 +41,7 @@ def xp(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] == 'xp']
+    filtered = [t[0] for t in tags if t[1] == "xp"]
     return filtered
 
 
@@ -56,5 +56,5 @@ def xs(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] == 'xs']
+    filtered = [t[0] for t in tags if t[1] == "xs"]
     return filtered

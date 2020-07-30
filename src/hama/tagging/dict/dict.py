@@ -26,21 +26,20 @@ class Dict(metaclass=Singleton):
         """Loads morpheme dictionary into memory."""
         if self.dict is None:
 
-            config_path = os.path.join(os.path.dirname(__file__),
-                                       'meta/source.ini')
+            config_path = os.path.join(os.path.dirname(__file__), "meta/source.ini")
             config = configparser.ConfigParser()
             config.read(config_path)
 
-            fp = config['FILTER_PATH']
-            hc = config['HASH_COUNT']
-            sz = config['FILTER_SIZE']
+            fp = config["FILTER_PATH"]
+            hc = config["HASH_COUNT"]
+            sz = config["FILTER_SIZE"]
 
             self.dict = {}
             for name, path in fp.items():
-                if name[0] == 'd':
-                    filter = LookupBloomFilter(path=path,
-                                               size=int(sz[name]),
-                                               hash_count=int(hc[name]))
+                if name[0] == "d":
+                    filter = LookupBloomFilter(
+                        path=path, size=int(sz[name]), hash_count=int(hc[name])
+                    )
                     filter.load()
 
                     tag = name[2:]

@@ -63,8 +63,8 @@ def split_after_indices(s, indices):
     Returns:
         list: String segmented at indices.
     """
-    assert (sorted(indices) == indices)
-    assert (len(indices) == 0 or indices[-1] < len(s))
+    assert sorted(indices) == indices
+    assert len(indices) == 0 or indices[-1] < len(s)
     start_indices = [-1] + indices
     end_indices = indices + [len(s)]
-    return [s[i + 1:j + 1] for i, j in zip(start_indices, end_indices)]
+    return [s[i + 1 : j + 1] for i, j in zip(start_indices, end_indices)]

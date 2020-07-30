@@ -12,5 +12,5 @@ def symbols(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] == 's']
+    filtered = [t[0] for t in tags if t[1] == "s"]
     return filtered

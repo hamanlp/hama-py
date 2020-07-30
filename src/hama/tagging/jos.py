@@ -12,7 +12,7 @@ def postpositions(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] in ['jc', 'jx', 'jp']]
+    filtered = [t[0] for t in tags if t[1] in ["jc", "jx", "jp"]]
     return filtered
 
 
@@ -40,7 +40,7 @@ def jc(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] == 'jc']
+    filtered = [t[0] for t in tags if t[1] == "jc"]
     return filtered
 
 
@@ -55,5 +55,5 @@ def jx(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] == 'jx']
+    filtered = [t[0] for t in tags if t[1] == "jx"]
     return filtered

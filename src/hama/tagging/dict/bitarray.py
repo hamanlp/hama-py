@@ -1,7 +1,7 @@
 import math
 
 
-class BitArray():
+class BitArray:
     """Class representing large bit arrays.
 
     Arrtibutes:
@@ -42,11 +42,10 @@ class BitArray():
                     start = i * es
                     end = min(start + es, len(byte))
                     byte_slice = byte[start:end]
-                    if byte_slice == b'':
+                    if byte_slice == b"":
                         break
                     bits_index = counter + i
-                    self.bits[bits_index] = int.from_bytes(byte_slice,
-                                                           byteorder='big')
+                    self.bits[bits_index] = int.from_bytes(byte_slice, byteorder="big")
                 counter += elems_per_read
                 byte = f.read(bs)
 
@@ -68,7 +67,7 @@ class BitArray():
         bit_position = 7 - (index % 8)
 
         int_bits = self.bits[internal_index]
-        byte = int_bits.to_bytes(4, byteorder='big')[byte_position]
+        byte = int_bits.to_bytes(4, byteorder="big")[byte_position]
 
         bit = (byte >> bit_position) & 1
         return bit

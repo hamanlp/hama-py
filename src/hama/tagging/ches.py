@@ -12,7 +12,7 @@ def nouns(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] in ['nc', 'nq', 'nb', 'np', 'nn']]
+    filtered = [t[0] for t in tags if t[1] in ["nc", "nq", "nb", "np", "nn"]]
     return filtered
 
 
@@ -41,7 +41,7 @@ def nc(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] == 'nc']
+    filtered = [t[0] for t in tags if t[1] == "nc"]
     return filtered
 
 
@@ -56,7 +56,7 @@ def nb(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] == 'nb']
+    filtered = [t[0] for t in tags if t[1] == "nb"]
     return filtered
 
 
@@ -71,7 +71,7 @@ def np(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] == 'np']
+    filtered = [t[0] for t in tags if t[1] == "np"]
     return filtered
 
 
@@ -86,5 +86,5 @@ def nn(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] == 'nn']
+    filtered = [t[0] for t in tags if t[1] == "nn"]
     return filtered

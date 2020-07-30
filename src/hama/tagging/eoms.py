@@ -12,7 +12,7 @@ def suffixes(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] in ['ep', 'ec', 'et', 'ef']]
+    filtered = [t[0] for t in tags if t[1] in ["ep", "ec", "et", "ef"]]
     return filtered
 
 
@@ -40,7 +40,7 @@ def ep(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] == 'ep']
+    filtered = [t[0] for t in tags if t[1] == "ep"]
     return filtered
 
 
@@ -55,7 +55,7 @@ def ec(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] == 'ec']
+    filtered = [t[0] for t in tags if t[1] == "ec"]
     return filtered
 
 
@@ -70,7 +70,7 @@ def et(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] == 'et']
+    filtered = [t[0] for t in tags if t[1] == "et"]
     return filtered
 
 
@@ -85,5 +85,5 @@ def ef(text):
 
     """
     tags = tag(text, zipped=True)
-    filtered = [t[0] for t in tags if t[1] == 'ef']
+    filtered = [t[0] for t in tags if t[1] == "ef"]
     return filtered
