@@ -75,7 +75,7 @@ jongsungs = [
 
 chosung_set = set(chosungs)
 joongsung_set = set(joongsungs)
-jongsung_set = set(jogsungs)
+jongsung_set = set(jongsungs)
 
 
 def disassemble(text, out=list):
@@ -158,7 +158,7 @@ def assemble(jaso_list):
             recovery_map.append(i)
             continue
 
-        chunk_end = min(chunk_start + 3, len(text))
+        chunk_end = min(chunk_start + 3, len(jaso_list))
 
         while chunk_end > 0:
 
@@ -169,7 +169,7 @@ def assemble(jaso_list):
                 chunk_length = len(chunk)
                 chosung = chosungs.index(chunk[0]) * 21 * 28 if chunk_length > 0 else 0
                 joongsung = joongsungs.index(chunk[1]) * 28 if chunk_length > 1 else 0
-                jongsung = joongsungs.index(chunk[2]) if chunk_length > 2 else 0
+                jongsung = jongsungs.index(chunk[2]) if chunk_length > 2 else 0
 
                 assembled_code = chosung + joongsung + jongsung + 0xAC00
                 return chr(assembled_code)
