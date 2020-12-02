@@ -73,6 +73,10 @@ jongsungs = [
     "ㅎ",
 ]
 
+chosung_set = set(chosungs)
+joongsung_set = set(joongsungs)
+jongsung_set = set(jogsungs)
+
 
 def disassemble(text, out=list):
     """
@@ -95,6 +99,7 @@ def disassemble(text, out=list):
 
         code = ord(c)
 
+        # Unicode hangul range.
         if 0xAC00 <= code <= 0xD7A3:
 
             chosung_code = chosungs[(code - 0xAC00) // (28 * 21)]
@@ -117,8 +122,57 @@ def disassemble(text, out=list):
         return "".join(out_list), recovery_map
 
 
-def assemble(text):
+def assemble(jaso_list):
+    """
+    Reassemble Korean consonants and vowels into text.
+
+    Args:
+        jaso_list (list): Input jaso list to reassemble.
+
+    Returns:
+         str: Reconstructed string.
+        list: List that maps each index of original deconstructed text 
+              to its constructed string index.
     """
 
-    """
-    pass
+    def valid_combination(jasos):
+        jasos_len = len(jasos)
+        valid_chosung = jasos_len > 0 and jasos[0] in chosung_set
+        valid_joongsung = jasos_len < 1 or jasos[1] in joongsung_set
+        valid_jongsung = jasos_len < 2 or jasos[2] in jongsung_set
+        return valid_chosung and valid_joongsung and valid_jongsung
+
+    out, recovery_map = "", list()
+
+    collected, corresponding_jamos, character_complete = list(), list(), False
+
+    chunk_start = 0
+
+    while chunk_start < len(jaso_list):
+
+        code = ord(jaso_list[chunk_start])
+
+        # Compatability jamo range.
+        if not (0x3130 <= code <= 0x318E):
+            out += c
+            recovery_map.append(i)
+            continue
+
+        chunk_end = min(chunk_start + 3, len(text))
+
+        while chunk_end > 0:
+
+            chunk = jaso_list[chunk_start:chunk_end]
+
+            if valid_combination(chunk):
+
+                chunk_length = len(chunk)
+                chosung = chosungs.index(chunk[0]) * 21 * 28 if chunk_length > 0 else 0
+                joongsung = joongsungs.index(chunk[1]) * 28 if chunk_length > 1 else 0
+                jongsung = joongsungs.index(chunk[2]) if chunk_length > 2 else 0
+
+                assembled_code = chosung + joongsung + jongsung + 0xAC00
+                return chr(assembled_code)
+
+            chunk_end -= 1
+    return None
