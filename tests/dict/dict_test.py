@@ -1,4 +1,5 @@
 import pytest
+
 from hama.tagging.dict import Dict
 
 

@@ -1,7 +1,8 @@
 import pytest
+
 from hama.tagging.sequence import (
-    insert,
     cartesian_product,
+    insert,
     on_bits,
     split_after_indices,
 )

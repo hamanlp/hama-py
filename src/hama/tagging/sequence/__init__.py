@@ -1,1 +1,1 @@
-from .util import insert, cartesian_product, split_after_indices, on_bits
+from .util import cartesian_product, insert, on_bits, split_after_indices

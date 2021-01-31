@@ -1,1 +1,1 @@
-from .jaso import assemble, disassemble, chosungs, joongsungs, jongsungs
+from .jaso import assemble, chosungs, disassemble, jongsungs, joongsungs

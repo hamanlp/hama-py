@@ -1,5 +1,6 @@
 import pytest
-from hama.tagging import orthotones, doks, ii
+
+from hama.tagging import doks, ii, orthotones
 
 
 def test_doks():

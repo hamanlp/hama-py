@@ -1,5 +1,6 @@
 import pytest
-from hama.tagging import modifiers, soos, mm, ma
+
+from hama.tagging import ma, mm, modifiers, soos
 
 
 def test_soos():
