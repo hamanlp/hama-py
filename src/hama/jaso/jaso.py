@@ -175,4 +175,4 @@ def assemble(jaso_list):
                 return chr(assembled_code)
 
             chunk_end -= 1
-    return None
+    return out
