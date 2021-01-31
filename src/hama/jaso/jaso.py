@@ -97,6 +97,9 @@ def disassemble(text, out=list):
 
     for i, c in enumerate(text):
 
+        if c.isspace():
+            continue
+
         code = ord(c)
 
         # Unicode hangul range.
