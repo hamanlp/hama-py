@@ -109,8 +109,9 @@ def disassemble(text, out=list):
             joongsung_code = joongsungs[(code - 0xAC00) % (28 * 21) // 28]
             jongsung_code = jongsungs[(code - 0xAC00) % (28 * 21) % 28]
 
-            disassembled = [chosung_code, joongsung_code, jongsung_code]
-            disassembled = [e for e in disassembled if e]
+            disassembled = [chosung_code, joongsung_code]
+            if jongsung_code:
+                disassembled.append(jongsung_code)
 
         else:
             disassembled = [c]
@@ -141,31 +142,37 @@ def assemble(jaso_list):
     def valid_combination(jasos):
         jasos_len = len(jasos)
         valid_chosung = jasos_len > 0 and jasos[0] in chosung_set
-        valid_joongsung = jasos_len < 1 or jasos[1] in joongsung_set
-        valid_jongsung = jasos_len < 2 or jasos[2] in jongsung_set
+        valid_joongsung = jasos_len < 2 or jasos[1] in joongsung_set
+        valid_jongsung = jasos_len < 3 or jasos[2] in jongsung_set
         return valid_chosung and valid_joongsung and valid_jongsung
 
     out, recovery_map = "", list()
-
-    collected, corresponding_jamos, character_complete = list(), list(), False
 
     chunk_start = 0
 
     while chunk_start < len(jaso_list):
 
-        code = ord(jaso_list[chunk_start])
+        char = jaso_list[chunk_start]
+        code = ord(char)
 
-        # Compatability jamo range.
-        if not (0x3130 <= code <= 0x318E):
-            out += c
-            recovery_map.append(i)
+        # Not in compatability jamo range (not_hangul).
+        # Will not bond with whatever comes next (not_chosung).
+        # Chosung at the end (end_chosung).
+        not_hangul = not (0x3130 <= code <= 0x318E)
+        not_chosung = char not in chosung_set
+        end_chosung = char in chosung_set and chunk_start == len(jaso_list) - 1
+        if not_hangul or not_chosung or end_chosung:
+            out += char
+            recovery_map.append(chunk_start)
+            chunk_start += 1
             continue
 
         chunk_end = min(chunk_start + 3, len(jaso_list))
 
-        while chunk_end > 0:
+        while chunk_end > chunk_start:
 
             chunk = jaso_list[chunk_start:chunk_end]
+            print(chunk)
 
             if valid_combination(chunk):
 
@@ -174,8 +181,16 @@ def assemble(jaso_list):
                 joongsung = joongsungs.index(chunk[1]) * 28 if chunk_length > 1 else 0
                 jongsung = jongsungs.index(chunk[2]) if chunk_length > 2 else 0
 
+                print(chosung, joongsung, jongsung)
+
                 assembled_code = chosung + joongsung + jongsung + 0xAC00
-                return chr(assembled_code)
+                print(assembled_code)
+                out += chr(assembled_code)
+                recovery_map.extend(range(chunk_start, chunk_end + 1))
+
+                chunk_start += len(chunk)
+                break
 
             chunk_end -= 1
+
     return out
