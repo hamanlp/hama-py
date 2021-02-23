@@ -1,5 +1,6 @@
 import pytest
-from hama.tagging import suffixes, eoms, ep, ec, et, ef
+
+from hama.tagging import ec, ef, eoms, ep, et, suffixes
 
 
 def test_eoms():

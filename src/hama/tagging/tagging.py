@@ -1,7 +1,8 @@
 import re
-from .sequence import insert, cartesian_product, on_bits, split_after_indices
+
 from .dict import Dict
 from .hmm import TagHMM
+from .sequence import cartesian_product, insert, on_bits, split_after_indices
 
 
 def tag(text, zipped=False, callback=None):

@@ -5,7 +5,6 @@ click==7.1.2
 coverage==5.2.1
 distlib==0.3.1
 filelock==3.0.12
-hama==1.0.1
 iniconfig==1.0.0
 mmh3==2.5.1
 more-itertools==8.4.0

@@ -1,5 +1,6 @@
 import pytest
-from hama.tagging import nouns, ches, nc, nb, np, nn
+
+from hama.tagging import ches, nb, nc, nn, nouns, np
 
 
 def test_nouns():

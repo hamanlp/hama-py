@@ -1,5 +1,6 @@
 import pytest
-from hama.tagging import predicates, yongs, pv, pa
+
+from hama.tagging import pa, predicates, pv, yongs
 
 
 def test_yongs():

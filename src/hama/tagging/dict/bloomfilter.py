@@ -1,6 +1,8 @@
-from .bitarray import BitArray
-import mmh3
 import os
+
+import mmh3
+
+from .bitarray import BitArray
 
 
 class LookupBloomFilter:

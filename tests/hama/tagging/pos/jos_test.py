@@ -1,5 +1,6 @@
 import pytest
-from hama.tagging import postpositions, jos, jc, jx
+
+from hama.tagging import jc, jos, jx, postpositions
 
 
 def test_jos():

@@ -1,4 +1,5 @@
 import pytest
+
 from hama.tagging.dict.bloomfilter import LookupBloomFilter
 
 

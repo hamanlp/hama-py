@@ -1,6 +1,8 @@
-import os
 import configparser
+import os
+
 from hama.tagging.langutils import Singleton
+
 from .bloomfilter import LookupBloomFilter
 
 
