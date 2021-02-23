@@ -172,7 +172,6 @@ def assemble(jaso_list):
         while chunk_end > chunk_start:
 
             chunk = jaso_list[chunk_start:chunk_end]
-            print(chunk)
 
             if valid_combination(chunk):
 
@@ -181,10 +180,7 @@ def assemble(jaso_list):
                 joongsung = joongsungs.index(chunk[1]) * 28 if chunk_length > 1 else 0
                 jongsung = jongsungs.index(chunk[2]) if chunk_length > 2 else 0
 
-                print(chosung, joongsung, jongsung)
-
                 assembled_code = chosung + joongsung + jongsung + 0xAC00
-                print(assembled_code)
                 out += chr(assembled_code)
                 recovery_map.extend(range(chunk_start, chunk_end + 1))
 
