@@ -77,8 +77,8 @@ class AhoCorasickAutomaton:
     def search(self, text):
         """
         Search for stored keywords in input text.
-        In case of overlap (e.g. "C" and "GC" are both keywords), word that ends first 
-        and added first (in that order) is returned first.
+        In case of overlap (e.g. "C" and "GC" are both keywords),
+        return order is not guaranteed.
 
         Args:
             text (str): String to search in.
