@@ -6,11 +6,13 @@ class AhoCorasickAutomaton:
 
     Attributes:
         self.root (Node): Root node.
+        self.size  (int): Number of nodes.
     """
 
     def __init__(self):
         """Initialize automaton."""
-        self.root = Node(parent=None)
+        self.root = Node(parent=None, id=0)
+        self.size = 1
 
     def add_words(self, words):
         """
@@ -37,7 +39,8 @@ class AhoCorasickAutomaton:
             next_node = curr_node.goto.get(c)
 
             if next_node is None:
-                next_node = Node(c)
+                next_node = Node(parent=curr_node, id=self.size - 1)
+                self.size += 1
                 curr_node.goto[c] = next_node
                 # set failure node.
 
@@ -113,9 +116,10 @@ class Node:
         goto         (dict): Map of character to next state.
         out           (str): Keyword found at this node.
         children     (list): List of children Nodes.
+        _id           (int): Node id. Used mostly for debugging.
     """
 
-    def __init__(self, parent, failure_node=None, out=None):
+    def __init__(self, parent, id, failure_node=None, out=None):
         """Initialize Node class"""
         self.parent = parent
         self.failure_node = failure_node if parent else self
@@ -123,6 +127,7 @@ class Node:
         self.out = set()
         if out:
             self.out.add(out)
+        self._id = id
 
     def is_root(self):
         """
@@ -168,6 +173,12 @@ class Node:
 
         """
         caret = "ㄴ" if depth else ""
-        print("\t" * depth, f"{caret}{char_to} ->", self.out)
+        failure_node = int(self.failure_node._id) if self.failure_node else "DNE"
+        print(
+            "\t" * depth,
+            f"{caret}{char_to} ->",
+            self.out,
+            f"id: {self._id}, fn: {failure_node}",
+        )
         for c, child in self.goto.items():
             child.visualize(depth + 1, c)
