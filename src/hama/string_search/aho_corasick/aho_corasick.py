@@ -39,7 +39,7 @@ class AhoCorasickAutomaton:
             next_node = curr_node.goto.get(c)
 
             if next_node is None:
-                next_node = Node(parent=curr_node, id=self.size - 1)
+                next_node = Node(parent=curr_node, id=self.size)
                 self.size += 1
                 curr_node.goto[c] = next_node
                 # set failure node.
