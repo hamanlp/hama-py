@@ -30,8 +30,6 @@ def test_substring_search():
     ac = AhoCorasickAutomaton()
     ac.add_words(["A", "AG", "C", "CAA", "GAG", "GC", "GCA"])
     assert set(ac.search("")) == set()
-    ac.visualize()
-    print(list(ac.search("GCAA")))
     assert set(ac.search("GCAA")) == set(
         [
             ("C", 1, 1),
@@ -48,4 +46,15 @@ def test_substring_search():
 def test_substring_search_1():
     ac = AhoCorasickAutomaton()
     ac.add_words(["A", "AG", "C", "CA", "CAA", "GAG", "GC", "GCA"])
-    print(list(ac.search("GCAA")))
+    assert set(ac.search("")) == set()
+    assert set(ac.search("GCAA")) == set(
+        [
+            ("C", 1, 1),
+            ("CA", 1, 2),
+            ("CAA", 1, 3),
+            ("GC", 0, 1),
+            ("GCA", 0, 2),
+            ("A", 2, 2),
+            ("A", 3, 3),
+        ]
+    )
