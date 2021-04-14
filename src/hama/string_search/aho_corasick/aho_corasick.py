@@ -91,9 +91,16 @@ class AhoCorasickAutomaton:
         curr = self.root
 
         for i, c in enumerate(text):
-            curr = curr.next(c)
+
+            while curr.goto.get(c) is None and curr != self.root:
+                curr = curr.next(c)
+
             for hit in curr.out:
                 yield hit, i - len(hit) + 1, i
+
+    def visualize(self):
+        """Print automaton to console."""
+        self.root.visualize(depth=0, char_to=None)
 
 
 class Node:
@@ -150,3 +157,17 @@ class Node:
             list: List of children nodes.
         """
         return self.goto.values()
+
+    def visualize(self, depth, char_to):
+        """
+        Print node and all its children
+
+        Args:
+            depth   (str): Depth of current node.
+            char_to (str): Character that led to this node from its parent.
+
+        """
+        caret = "ㄴ" if depth else ""
+        print("\t" * depth, f"{caret}{char_to} ->", self.out)
+        for c, child in self.goto.items():
+            child.visualize(depth + 1, c)
