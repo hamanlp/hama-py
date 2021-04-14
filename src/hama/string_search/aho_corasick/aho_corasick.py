@@ -6,11 +6,13 @@ class AhoCorasickAutomaton:
 
     Attributes:
         self.root (Node): Root node.
+        self.size  (int): Number of nodes.
     """
 
     def __init__(self):
         """Initialize automaton."""
-        self.root = Node(parent=None)
+        self.root = Node(parent=None, id=0)
+        self.size = 1
 
     def add_words(self, words):
         """
@@ -37,7 +39,8 @@ class AhoCorasickAutomaton:
             next_node = curr_node.goto.get(c)
 
             if next_node is None:
-                next_node = Node(c)
+                next_node = Node(parent=curr_node, id=self.size)
+                self.size += 1
                 curr_node.goto[c] = next_node
                 # set failure node.
 
@@ -66,19 +69,21 @@ class AhoCorasickAutomaton:
             for char, child in node.goto.items():
                 queue.append(child)
                 candidate_node = node.failure_node
-                while not candidate_node.goto.get(char) and not candidate_node.is_root:
+                while (
+                    not candidate_node.goto.get(char) and not candidate_node.is_root()
+                ):
                     candidate_node = candidate_node.failure_node
                 child_failure_node = candidate_node.goto.get(char)
                 child.failure_node = (
-                    child_failure_node if child_failure_node else candidate_node
+                    child_failure_node if child_failure_node else self.root
                 )
                 child.out = child.failure_node.out.union(child.out)
 
     def search(self, text):
         """
         Search for stored keywords in input text.
-        In case of overlap (e.g. "C" and "GC" are both keywords), word that ends first 
-        and added first (in that order) is returned first.
+        In case of overlap (e.g. "C" and "GC" are both keywords),
+        return order is not guaranteed.
 
         Args:
             text (str): String to search in.
@@ -91,9 +96,20 @@ class AhoCorasickAutomaton:
         curr = self.root
 
         for i, c in enumerate(text):
+
+            while curr.goto.get(c) is None and curr != self.root:
+                curr = curr.next(c)
+            # print('in while', c)
+
             curr = curr.next(c)
+            # print('switch', c)
+
             for hit in curr.out:
                 yield hit, i - len(hit) + 1, i
+
+    def visualize(self):
+        """Print automaton to console."""
+        self.root.visualize(depth=0, char_to=None)
 
 
 class Node:
@@ -106,9 +122,10 @@ class Node:
         goto         (dict): Map of character to next state.
         out           (str): Keyword found at this node.
         children     (list): List of children Nodes.
+        _id           (int): Node id. Used mostly for debugging.
     """
 
-    def __init__(self, parent, failure_node=None, out=None):
+    def __init__(self, parent, id, failure_node=None, out=None):
         """Initialize Node class"""
         self.parent = parent
         self.failure_node = failure_node if parent else self
@@ -116,6 +133,7 @@ class Node:
         self.out = set()
         if out:
             self.out.add(out)
+        self._id = id
 
     def is_root(self):
         """
@@ -150,3 +168,23 @@ class Node:
             list: List of children nodes.
         """
         return self.goto.values()
+
+    def visualize(self, depth, char_to):
+        """
+        Print node and all its children
+
+        Args:
+            depth   (str): Depth of current node.
+            char_to (str): Character that led to this node from its parent.
+
+        """
+        caret = "ㄴ" if depth else ""
+        failure_node = int(self.failure_node._id) if self.failure_node else "DNE"
+        print(
+            "\t" * depth,
+            f"{caret}{char_to} ->",
+            self.out,
+            f"id: {self._id}, fn: {failure_node}",
+        )
+        for c, child in self.goto.items():
+            child.visualize(depth + 1, c)
