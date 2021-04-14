@@ -69,11 +69,13 @@ class AhoCorasickAutomaton:
             for char, child in node.goto.items():
                 queue.append(child)
                 candidate_node = node.failure_node
-                while not candidate_node.goto.get(char) and not candidate_node.is_root:
+                while (
+                    not candidate_node.goto.get(char) and not candidate_node.is_root()
+                ):
                     candidate_node = candidate_node.failure_node
                 child_failure_node = candidate_node.goto.get(char)
                 child.failure_node = (
-                    child_failure_node if child_failure_node else candidate_node
+                    child_failure_node if child_failure_node else self.root
                 )
                 child.out = child.failure_node.out.union(child.out)
 
@@ -97,6 +99,10 @@ class AhoCorasickAutomaton:
 
             while curr.goto.get(c) is None and curr != self.root:
                 curr = curr.next(c)
+            # print('in while', c)
+
+            curr = curr.next(c)
+            # print('switch', c)
 
             for hit in curr.out:
                 yield hit, i - len(hit) + 1, i
