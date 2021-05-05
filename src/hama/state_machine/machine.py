@@ -8,7 +8,7 @@ class StateMachine:
         self.transitions = {}  # Could use default dict here.
         for state in states:
             self.add_state(state)
-        self.init_state = states[0]
+        self.init_state = self.states[0]
         self.state = self.init_state
 
     def add_state(self, state):
