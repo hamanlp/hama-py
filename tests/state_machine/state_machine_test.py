@@ -8,9 +8,45 @@ def test_state_init():
     assert s.name == "INIT"
 
 
-def test_transition_init():
-    s = State("INIT")
-    assert s.name == "INIT"
+def test_transition_init_basic():
+    s0 = State("INIT")
+    s1 = State("FIRST")
+    t = Transition(s0, s1, 0)
+    assert t.from_state == s0
+    assert t.to_state == s1
+    assert t.input == 0
+    assert t.condition == None
+    assert t.out == None
+
+
+def test_transition_init_with_condition():
+    s0 = State("INIT")
+    s1 = State("FIRST")
+
+    def condition(transition, memory):
+        return True
+
+    t = Transition(s0, s1, 0, condition)
+    assert t.from_state == s0
+    assert t.to_state == s1
+    assert t.input == 0
+    assert t.condition == condition
+    assert t.out == None
+
+
+def test_transition_init_with_output():
+    s0 = State("INIT")
+    s1 = State("FIRST")
+
+    def condition(transition, memory):
+        return True
+
+    t = Transition(s0, s1, 0, condition, "OUT")
+    assert t.from_state == s0
+    assert t.to_state == s1
+    assert t.input == 0
+    assert t.condition == condition
+    assert t.out == "OUT"
 
 
 def test_state_machine_empty_init():
@@ -18,7 +54,7 @@ def test_state_machine_empty_init():
         fsm = StateMachine([])
 
 
-def test_state_machine_single_init():
+def test_state_machine_init_single():
 
     s = State("INIT")
 
@@ -27,9 +63,10 @@ def test_state_machine_single_init():
     assert fsm.transitions[s] == {}
     assert fsm.init_state == s
     assert fsm.state == s
+    assert fsm.memory == {}
 
 
-def test_state_machine_multiple_init():
+def test_state_machine_init_multiple():
 
     s0 = State("INIT")
     s1 = State("FIRST")
@@ -44,3 +81,4 @@ def test_state_machine_multiple_init():
     assert fsm.transitions[s3] == {}
     assert fsm.init_state == s0
     assert fsm.state == s0
+    assert fsm.memory == {}
