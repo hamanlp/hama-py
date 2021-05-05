@@ -61,7 +61,7 @@ class State:
 
 
 class Transition:
-    def __init__(self, from_state, to, input, condition=None, out=None):
+    def __init__(self, from_state, to_state, input, condition=None, out=None):
         self.from_state = from_state
         self.to_state = to_state
         self.input = input
