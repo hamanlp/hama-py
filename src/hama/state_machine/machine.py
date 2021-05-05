@@ -1,10 +1,14 @@
 class StateMachine:
-    def __init__(self, states=[]):
-        self.states = []
+    def __init__(self, states):
+        if len(states) < 1:
+            raise ValueError(
+                "State machine must be initialized with at least one state (INIT)."
+            )
+        self.states = states
         self.transitions = {}  # Could use default dict here.
         for state in states:
             self.add_state(state)
-        self.init_state = 0
+        self.init_state = states[0]
         self.state = self.init_state
 
     def add_state(state):
