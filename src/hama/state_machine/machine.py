@@ -10,6 +10,7 @@ class StateMachine:
             self.add_state(state)
         self.init_state = self.states[0]
         self.state = self.init_state
+        self.memory = {}
 
     def add_state(self, state):
         self.states.append(state)
