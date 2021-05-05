@@ -11,11 +11,11 @@ class StateMachine:
         self.init_state = states[0]
         self.state = self.init_state
 
-    def add_state(state):
+    def add_state(self, state):
         self.states.append(state)
         self.transitions[state] = {}
 
-    def add_transition(from_state, to_state, input, condition=None, out=None):
+    def add_transition(self, from_state, to_state, input, condition=None, out=None):
 
         transition = Transition(from_state, to_state, input, condition, out)
 
@@ -24,7 +24,7 @@ class StateMachine:
             self.transitions_from[from_State] = {}
         self.transitions[from_state][input] = transition
 
-    def receive(input, ignore_warnings=False):
+    def receive(self, input, ignore_warnings=False):
 
         transitions = self.transitions.get(self.state)
         if not transitions:
