@@ -4,7 +4,7 @@ class StateMachine:
             raise ValueError(
                 "State machine must be initialized with at least one state (INIT)."
             )
-        self.states = states
+        self.states = []
         self.transitions = {}  # Could use default dict here.
         for state in states:
             self.add_state(state)
@@ -51,6 +51,9 @@ class StateMachine:
 class State:
     def __init__(self, name):
         self.name = name
+
+    def __eq__(self, other):
+        return self.name == other.name
 
 
 class Transition:
