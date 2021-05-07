@@ -106,3 +106,96 @@ def test_state_machine_init_multiple():
     assert fsm.init_state == s0
     assert fsm.state == s0
     assert fsm.memory == {}
+
+
+def test_state_machine_add_transition():
+
+    s0 = State("INIT")
+    s1 = State("FIRST")
+
+    def callback(transition, memory):
+        return True
+
+    def condition(transition, memory):
+        return True
+
+    fsm = StateMachine([s0, s1])
+    transition = fsm.add_transition(s0, s1, 0, callback, condition, "OUT")
+    assert fsm.states == [s0, s1]
+    assert fsm.transitions[s0] == {0: transition}
+    assert fsm.transitions[s1] == {}
+    assert fsm.init_state == s0
+    assert fsm.state == s0
+    assert fsm.memory == {}
+
+
+def test_state_machine_receive():
+
+    s0 = State("INIT")
+    s1 = State("FIRST")
+
+    def callback(transition, memory):
+        return True
+
+    def condition(transition, memory):
+        return True
+
+    fsm = StateMachine([s0, s1])
+    transition = fsm.add_transition(s0, s1, 0, callback, condition, "OUT")
+    next_state, out = fsm.receive(0)
+    assert next_state == s1
+    assert out == "OUT"
+    assert fsm.states == [s0, s1]
+    assert fsm.transitions[s0] == {0: transition}
+    assert fsm.transitions[s1] == {}
+    assert fsm.init_state == s0
+    assert fsm.state == s1
+    assert fsm.memory == {}
+
+
+def test_state_machine_receive_with_condition():
+
+    s0 = State("INIT")
+    s1 = State("FIRST")
+
+    def callback(transition, memory):
+        return True
+
+    def condition(transition, memory):
+        return False
+
+    fsm = StateMachine([s0, s1])
+    transition = fsm.add_transition(s0, s1, 0, callback, condition, "OUT")
+    next_state, out = fsm.receive(0)
+    assert next_state == s0
+    assert out is None
+    assert fsm.states == [s0, s1]
+    assert fsm.transitions[s0] == {0: transition}
+    assert fsm.transitions[s1] == {}
+    assert fsm.init_state == s0
+    assert fsm.state == s0
+    assert fsm.memory == {}
+
+
+def test_state_machine_receive_with_callback():
+
+    s0 = State("INIT")
+    s1 = State("FIRST")
+
+    def callback(transition, memory):
+        memory["temp"] = "Hello"
+
+    def condition(transition, memory):
+        return True
+
+    fsm = StateMachine([s0, s1])
+    transition = fsm.add_transition(s0, s1, 0, callback, condition, "OUT")
+    next_state, out = fsm.receive(0)
+    assert next_state == s1
+    assert out == "OUT"
+    assert fsm.states == [s0, s1]
+    assert fsm.transitions[s0] == {0: transition}
+    assert fsm.transitions[s1] == {}
+    assert fsm.init_state == s0
+    assert fsm.state == s1
+    assert fsm.memory == {"temp": "Hello"}
