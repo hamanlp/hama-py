@@ -16,14 +16,18 @@ class StateMachine:
         self.states.append(state)
         self.transitions[state] = {}
 
-    def add_transition(self, from_state, to_state, input, condition=None, out=None):
+    def add_transition(
+        self, from_state, to_state, input, callback=None, condition=None, out=None
+    ):
 
-        transition = Transition(from_state, to_state, input, condition, out)
+        transition = Transition(from_state, to_state, input, callback, condition, out)
 
         transitions_from = self.transitions.get(from_state)
         if not transitions_from:
-            self.transitions_from[from_State] = {}
+            self.transitions[from_state] = {}
         self.transitions[from_state][input] = transition
+
+        return transition
 
     def receive(self, input, ignore_warnings=False):
 
