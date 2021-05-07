@@ -19,17 +19,37 @@ def test_transition_init_basic():
     assert t.out == None
 
 
+def test_transition_init_with_callback():
+    s0 = State("INIT")
+    s1 = State("FIRST")
+
+    def callback(transition, memory):
+        return True
+
+    t = Transition(s0, s1, 0, callback)
+    assert t.from_state == s0
+    assert t.to_state == s1
+    assert t.input == 0
+    assert t.callback == callback
+    assert t.condition == None
+    assert t.out == None
+
+
 def test_transition_init_with_condition():
     s0 = State("INIT")
     s1 = State("FIRST")
 
+    def callback(transition, memory):
+        return True
+
     def condition(transition, memory):
         return True
 
-    t = Transition(s0, s1, 0, condition)
+    t = Transition(s0, s1, 0, callback, condition)
     assert t.from_state == s0
     assert t.to_state == s1
     assert t.input == 0
+    assert t.callback == callback
     assert t.condition == condition
     assert t.out == None
 
@@ -38,13 +58,17 @@ def test_transition_init_with_output():
     s0 = State("INIT")
     s1 = State("FIRST")
 
+    def callback(transition, memory):
+        return True
+
     def condition(transition, memory):
         return True
 
-    t = Transition(s0, s1, 0, condition, "OUT")
+    t = Transition(s0, s1, 0, callback, condition, "OUT")
     assert t.from_state == s0
     assert t.to_state == s1
     assert t.input == 0
+    assert t.callback == callback
     assert t.condition == condition
     assert t.out == "OUT"
 
