@@ -44,6 +44,7 @@ class StateMachine:
             should_transition = transition.condition(transition, self.memory)
 
         if should_transition:
+            transition.callback(transition, self.memory)
             self.state = transition.to_state
 
         return next_state, transition.out
@@ -61,9 +62,12 @@ class State:
 
 
 class Transition:
-    def __init__(self, from_state, to_state, input, condition=None, out=None):
+    def __init__(
+        self, from_state, to_state, input, callback=None, condition=None, out=None
+    ):
         self.from_state = from_state
         self.to_state = to_state
         self.input = input
+        self.callback = callback
         self.condition = condition
         self.out = out
