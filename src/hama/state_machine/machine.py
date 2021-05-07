@@ -38,7 +38,7 @@ class StateMachine:
             return
 
         transition = transitions.get(input)
-        if not next_state:
+        if not transition:
             if not ignore_warnings:
                 print(f"{self.state.name} has no transition defined for input {input}.")
             return
@@ -47,11 +47,13 @@ class StateMachine:
         if transition.condition:
             should_transition = transition.condition(transition, self.memory)
 
+        out = None
         if should_transition:
             transition.callback(transition, self.memory)
             self.state = transition.to_state
+            out = transition.out
 
-        return next_state, transition.out
+        return self.state, out
 
 
 class State:
