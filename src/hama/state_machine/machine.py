@@ -49,7 +49,8 @@ class StateMachine:
 
         out = None
         if should_transition:
-            transition.callback(transition, self.memory)
+            if transition.callback:
+                transition.callback(transition, self.memory)
             self.state = transition.to_state
             out = transition.out
 
