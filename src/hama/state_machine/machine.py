@@ -35,13 +35,13 @@ class StateMachine:
         if not transitions:
             if strict:
                 print(f"{self.state.name} has no transitions defined.")
-            return
+            return self.state, None
 
         transition = transitions.get(input)
         if not transition:
             if strict:
                 print(f"{self.state.name} has no transition defined for input {input}.")
-            return
+            return self.state, None
 
         should_transition = True
         if transition.condition:
@@ -53,7 +53,6 @@ class StateMachine:
             self.state = transition.to_state
             out = transition.out
 
-        print(self.state, out)
         return self.state, out
 
 
