@@ -29,17 +29,17 @@ class StateMachine:
 
         return transition
 
-    def receive(self, input, ignore_warnings=False):
+    def receive(self, input, strict=False):
 
         transitions = self.transitions.get(self.state)
         if not transitions:
-            if not ignore_warnings:
+            if strict:
                 print(f"{self.state.name} has no transitions defined.")
             return
 
         transition = transitions.get(input)
         if not transition:
-            if not ignore_warnings:
+            if strict:
                 print(f"{self.state.name} has no transition defined for input {input}.")
             return
 
@@ -53,6 +53,7 @@ class StateMachine:
             self.state = transition.to_state
             out = transition.out
 
+        print(self.state, out)
         return self.state, out
 
 
