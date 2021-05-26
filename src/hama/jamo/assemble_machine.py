@@ -21,7 +21,12 @@ def store_then_flush(transition, memory):
     return pending
 
 
-class AssembleMachine:
+store = "store"
+flush_then_store = "flush_then_store"
+store_then_flush = "store_then_flush"
+
+
+class Assembler:
     def __init__(self):
 
         S0 = State("INIT")
@@ -30,29 +35,50 @@ class AssembleMachine:
         S3 = State("CHO_JOONG")
 
         self.fsm = StateMachine(states=[S0, S1, S2, S3])
+        self.unclaimed_jamos = []
 
         for c in chosungs:
-            self.fsm.add_transition(S0, S1, c, callback=store)
-            self.fsm.add_transition(S1, S0, c, callback=flush_then_store)
-            self.fsm.add_transition(S2, S0, c, callback=flush_then_store)
-            self.fsm.add_transition(S3, S0, c, callback=flush_then_store)
+            self.fsm.add_transition(S0, S1, c, out=store)
+            self.fsm.add_transition(S1, S0, c, out=flush_then_store)
+            self.fsm.add_transition(S2, S0, c, out=flush_then_store)
+            self.fsm.add_transition(S3, S0, c, out=flush_then_store)
 
         for c in joongsungs:
-            self.fsm.add_transition(S0, S0, c, out=[c])
-            self.fsm.add_transition(S1, S3, c, callback=store)
-            self.fsm.add_transition(S2, S3, c, callback=flush_then_store)
-            self.fsm.add_transition(S3, S0, c, callback=flush_then_store)
+            self.fsm.add_transition(S0, S0, c, out=store)
+            self.fsm.add_transition(S1, S3, c, out=store)
+            self.fsm.add_transition(S2, S3, c, out=flush_then_store)
+            self.fsm.add_transition(S3, S0, c, out=flush_then_store)
 
         for c in jongsungs:
-            self.fsm.add_transition(S0, S0, c, out=[c])
-            self.fsm.add_transition(S1, S0, c, callback=flush_then_store)
-            self.fsm.add_transition(S2, S0, c, callback=flush_then_store)
-            self.fsm.add_transition(S3, S0, c, callback=store_then_flush)
+            self.fsm.add_transition(S0, S0, c, out=store)
+            self.fsm.add_transition(S1, S0, c, out=flush_then_store)
+            self.fsm.add_transition(S2, S0, c, out=flush_then_store)
+            self.fsm.add_transition(S3, S0, c, out=store_then_flush)
 
-    def receive(self, sequence):
-        for c in sequence: 
+    def assemble(self, sequence):
+        return "".join(self.assemble_character_by_character(sequence))
+
+    def assemble_character_by_character(self, sequence):
+        for c in sequence:
             _, out = self.fsm.receive(c)
-            if out is not None:
-                print('0', out)
+            if out == store:
+                self.unclaimed_jamos.append(c)
+            elif out == flush_then_store:
+                yield self.flush()
+                self.unclaimed_jamos = [c]
+            elif out == store_then_flush:
+                self.unclaimed_jamos.append(c)
+                yield self.flush()
 
-AssembleMachine().receive(['ㅎ', 'ㅗ', 'ㅇ'])
+    def flush(self):
+
+        chunk_length = len(self.unclaimed_jamos)
+        chosung = chosungs.index(chunk[0]) * 21 * 28 if chunk_length > 0 else 0
+        joongsung = joongsungs.index(chunk[1]) * 28 if chunk_length > 1 else 0
+        jongsung = jongsungs.index(chunk[2]) if chunk_length > 2 else 0
+
+        assembled_code = chosung + joongsung + jongsung + 0xAC00
+        return assembled_code
+
+
+print(Assembler().assemble(["ㅎ", "ㅗ", "ㅇ"]))
