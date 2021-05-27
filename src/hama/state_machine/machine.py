@@ -34,8 +34,8 @@ class StateMachine:
         self, from_state, to_state, callback=None, condition=None, out=None
     ):
         transition = Transition(from_state, to_state, None, callback, condition, out)
-
-        self.wildcard_transitions[from_state] = to_state
+        self.wildcard_transitions[from_state] = transition
+        return transition
 
     def receive(self, input, strict=False):
 
