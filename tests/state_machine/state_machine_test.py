@@ -128,6 +128,28 @@ def test_state_machine_add_transition():
     assert fsm.state == s0
     assert fsm.memory == {}
 
+def test_state_machine_add_wildcard_transition():
+
+    s0 = State("INIT")
+    s1 = State("FIRST")
+
+    def callback(transition, memory):
+        return True
+
+    def condition(transition, memory):
+        return True
+
+    fsm = StateMachine([s0, s1])
+    transition = fsm.add_wildcard_transition(s0, s1, callback, condition, "OUT")
+    assert fsm.states == [s0, s1]
+    assert fsm.transitions[s0] == {}
+    assert fsm.transitions[s1] == {}
+    assert fsm.wlidcard_transitions[s0] == {s1}
+    assert fsm.init_state == s0
+    assert fsm.state == s0
+    assert fsm.memory == {}
+
+
 
 def test_state_machine_receive():
 
