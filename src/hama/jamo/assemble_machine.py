@@ -24,6 +24,7 @@ def store_then_flush(transition, memory):
 store = "store"
 flush_then_store = "flush_then_store"
 store_then_flush = "store_then_flush"
+flush_then_flush = "flush_then_flush"
 
 
 class Assembler:
@@ -35,7 +36,7 @@ class Assembler:
         S3 = State("CHO_JOONG")
 
         self.fsm = StateMachine(states=[S0, S1, S2, S3])
-        self.unclaimed_jamos = []
+        self.unassembled_jamos = []
 
         for c in chosungs:
             self.fsm.add_transition(S0, S1, c, out=store)
@@ -55,6 +56,11 @@ class Assembler:
             self.fsm.add_transition(S2, S0, c, out=flush_then_store)
             self.fsm.add_transition(S3, S0, c, out=store_then_flush)
 
+        self.fsm.add_wildcard_transition(S0, S0, out=flush_then_flush)
+        self.fsm.add_wildcard_transition(S1, S0, out=flush_then_flush)
+        self.fsm.add_wildcard_transition(S2, S0, out=flush_then_flush)
+        self.fsm.add_wildcard_transition(S3, S0, out=flush_then_flush)
+
     def assemble(self, sequence):
         return "".join(self.assemble_character_by_character(sequence))
 
@@ -62,17 +68,22 @@ class Assembler:
         for c in sequence:
             _, out = self.fsm.receive(c)
             if out == store:
-                self.unclaimed_jamos.append(c)
+                self.unassembled_jamos.append(c)
             elif out == flush_then_store:
-                yield self.flush()
-                self.unclaimed_jamos = [c]
+                if self.unassembled_jamos:
+                    yield self.flush()
+                self.unassembled_jamos = [c]
             elif out == store_then_flush:
-                self.unclaimed_jamos.append(c)
+                self.unassembled_jamos.append(c)
                 yield self.flush()
+            elif out == flush_then_flush:
+                if self.unassembled_jamos:
+                    yield self.flush()
+                yield c
 
     def flush(self):
 
-        chunk_length = len(self.unclaimed_jamos)
+        chunk_length = len(self.unassembled_jamos)
         chosung = chosungs.index(chunk[0]) * 21 * 28 if chunk_length > 0 else 0
         joongsung = joongsungs.index(chunk[1]) * 28 if chunk_length > 1 else 0
         jongsung = jongsungs.index(chunk[2]) if chunk_length > 2 else 0
