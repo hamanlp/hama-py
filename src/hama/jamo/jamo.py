@@ -77,6 +77,27 @@ chosung_set = set(chosungs)
 joongsung_set = set(joongsungs)
 jongsung_set = set(jongsungs)
 
+unique_to_chosungs = ["ㅉ", "ㅃ", "ㄸ"]
+unique_to_jongsungs = ["ㄾ", "ㄶ", "ㄵ", "ㄻ", "ㅀ", "ㄳ", "ㄽ", "ㄼ", "ㄿ", "ㄺ", "ㅄ"]
+both_chosung_and_jongsung = [
+    "ㅈ",
+    "ㄹ",
+    "ㄴ",
+    "ㅎ",
+    "ㅊ",
+    "ㅆ",
+    "ㄲ",
+    "ㅋ",
+    "ㅍ",
+    "ㅌ",
+    "ㅁ",
+    "ㅅ",
+    "ㅂ",
+    "ㅇ",
+    "ㄷ",
+    "ㄱ",
+]
+
 
 def disassemble(text, out=list):
     """
