@@ -108,16 +108,11 @@ class Assembler:
 
     def flush(self):
 
-        chunk_length = len(self.unassembled_jamos)
-        chosung = (
-            chosungs.index(self.unassembled_jamos[0]) * 21 * 28
-            if chunk_length > 0
-            else 0
-        )
-        joongsung = (
-            joongsungs.index(self.unassembled_jamos[1]) * 28 if chunk_length > 1 else 0
-        )
-        jongsung = jongsungs.index(self.unassembled_jamos[2]) if chunk_length > 2 else 0
+        chunk = self.unassembled_jamos
+        chunk_length = len(chunk)
+        chosung = chosungs.index(chunk) * 21 * 28 if chunk_length > 0 else 0
+        joongsung = joongsungs.index(chunk[1]) * 28 if chunk_length > 1 else 0
+        jongsung = jongsungs.index(chunk[2]) if chunk_length > 2 else 0
 
         assembled_code = chosung + joongsung + jongsung + 0xAC00
         return chr(assembled_code)
