@@ -65,6 +65,7 @@ class Assembler:
     def assemble_character_by_character(self, sequence):
         for c in sequence:
             _, out = self.fsm.receive(c)
+            print(c, self.fsm.state.name, out)
             if out == store:
                 self.unassembled_jamos.append(c)
             elif out == flush_then_store:
@@ -99,4 +100,7 @@ class Assembler:
         jongsung = jongsungs.index(chunk[2]) if chunk_length > 2 else 0
 
         assembled_code = chosung + joongsung + jongsung + 0xAC00
+
+        self.unassembled_jamos = []
+
         return chr(assembled_code)
