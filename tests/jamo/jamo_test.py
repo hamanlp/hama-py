@@ -41,8 +41,8 @@ def test_assemble():
     )
     assert assemble(["ㅇ", "ㅏ", "ㄴ", "ㄷ", "ㅙ", "ㅇ", "ㅛ", "!"]) == "안돼요!"
     assert assemble(["ㅅ", "ㅣ", "ㅀ", "ㅇ", "ㅓ", "ㅇ", "ㅛ", "!"]) == "싫어요!"
-    assert assemble(["ㄴ", "ㅣ", "ㅁ", "ㅅ", "ㅣ", "ㄴ", "ㄱ", "ㅗ", "ㅅ", "ㄱ"]) == "님신고ㅅㄱ"
-    assert assemble(["ㅓ", "ㅐ", "ㅔ"] == "ㅓㅐㅔ")
+    assert assemble(["ㄴ", "ㅣ", "ㅁ", "ㅅ", "ㅣ", "ㄴ", "ㄱ", "ㅗ", "ㅅ", "ㄱ"]) == "님신곳ㄱ"
+    assert assemble(["ㅓ", "ㅐ", "ㅔ"]) == "ㅓㅐㅔ"
 
 
 def test_disassemble():
