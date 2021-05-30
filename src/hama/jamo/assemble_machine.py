@@ -9,25 +9,6 @@ from jamo import (
 
 from hama.state_machine import State, StateMachine
 
-
-def store(transition, memory):
-    memory["pending"].append(transition.input)
-    return None
-
-
-def flush_then_store(transition, memory):
-    pending = memory["pending"]
-    memory["pending"] = [transition.input]
-    return pending
-
-
-def store_then_flush(transition, memory):
-    memory["pending"].append()
-    pending = memory["pending"]
-    memory["pending"] = []
-    return pending
-
-
 store = "store"
 flush_then_store = "flush_then_store"
 store_then_flush = "store_then_flush"
