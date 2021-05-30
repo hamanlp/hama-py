@@ -58,7 +58,7 @@ class Assembler:
             self.fsm.add_transition(S0, S0, c, out=flush_then_flush)
             self.fsm.add_transition(S1, S2, c, out=store)
             self.fsm.add_transition(S2, S0, c, out=flush_then_flush)
-            self.fsm.add_transition(S3, S0, c, out=take_then_flush)
+            self.fsm.add_transition(S3, S2, c, out=take_then_flush)
 
         for c in unique_to_jongsungs:
             self.fsm.add_transition(S0, S0, c, out=flush_then_flush)
@@ -79,7 +79,6 @@ class Assembler:
 
     def assemble(self, sequence):
         assembled = self.assemble_character_by_character(sequence)
-        print(list(assembled))
         return "".join(assembled)
 
     def assemble_character_by_character(self, sequence):
@@ -105,6 +104,7 @@ class Assembler:
                     if self.unassembled_jamos:
                         yield self.flush()
                     self.unassembled_jamos = [jong, c]
+            print(c, out, self.fsm.state.name)
         yield self.flush()
 
     def flush(self):
@@ -117,6 +117,3 @@ class Assembler:
 
         assembled_code = chosung + joongsung + jongsung + 0xAC00
         return chr(assembled_code)
-
-
-print(Assembler().assemble(["ㅎ", "ㅗ", "ㅇ"]))
