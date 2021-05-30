@@ -1,6 +1,4 @@
-from hama.state_machine import State, StateMachine
-
-from .constants import (
+from constants import (
     both_chosung_and_jongsung,
     chosungs,
     jongsungs,
@@ -8,6 +6,8 @@ from .constants import (
     unique_to_chosungs,
     unique_to_jongsungs,
 )
+
+from hama.state_machine import State, StateMachine
 
 store = "store"
 flush_then_store = "flush_then_store"
@@ -65,7 +65,6 @@ class Assembler:
     def assemble_character_by_character(self, sequence):
         for c in sequence:
             _, out = self.fsm.receive(c)
-            print(c, self.fsm.state.name, out)
             if out == store:
                 self.unassembled_jamos.append(c)
             elif out == flush_then_store:
@@ -104,3 +103,7 @@ class Assembler:
         self.unassembled_jamos = []
 
         return chr(assembled_code)
+
+
+if __name__ == "__main__":
+    print(Assembler().assemble(["ㅁ", "ㅝ", "ㄹ", "ㅏ", "ㄱ", "ㅗ", "ㅇ", "ㅛ", "?"]))
