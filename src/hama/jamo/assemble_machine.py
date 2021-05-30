@@ -89,6 +89,9 @@ class Assembler:
 
     def flush(self):
 
+        if not self.unassembled_jamos:
+            return ""
+
         chunk = self.unassembled_jamos
         chunk_length = len(chunk)
         chosung = chosungs.index(chunk[0]) * 21 * 28 if chunk_length > 0 else 0
