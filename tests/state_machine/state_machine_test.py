@@ -85,6 +85,7 @@ def test_state_machine_init_single():
     fsm = StateMachine([s])
     assert fsm.states == [s]
     assert fsm.transitions[s] == {}
+    assert fsm.wildcard_transitions == {}
     assert fsm.init_state == s
     assert fsm.state == s
     assert fsm.memory == {}
@@ -103,6 +104,7 @@ def test_state_machine_init_multiple():
     assert fsm.transitions[s1] == {}
     assert fsm.transitions[s2] == {}
     assert fsm.transitions[s3] == {}
+    assert fsm.wildcard_transitions == {}
     assert fsm.init_state == s0
     assert fsm.state == s0
     assert fsm.memory == {}
@@ -124,6 +126,29 @@ def test_state_machine_add_transition():
     assert fsm.states == [s0, s1]
     assert fsm.transitions[s0] == {0: transition}
     assert fsm.transitions[s1] == {}
+    assert fsm.wildcard_transitions == {}
+    assert fsm.init_state == s0
+    assert fsm.state == s0
+    assert fsm.memory == {}
+
+
+def test_state_machine_add_wildcard_transition():
+
+    s0 = State("INIT")
+    s1 = State("FIRST")
+
+    def callback(transition, memory):
+        return True
+
+    def condition(transition, memory):
+        return True
+
+    fsm = StateMachine([s0, s1])
+    transition = fsm.add_wildcard_transition(s0, s1, callback, condition, "OUT")
+    assert fsm.states == [s0, s1]
+    assert fsm.transitions[s0] == {}
+    assert fsm.transitions[s1] == {}
+    assert fsm.wildcard_transitions == {s0: transition}
     assert fsm.init_state == s0
     assert fsm.state == s0
     assert fsm.memory == {}
@@ -135,7 +160,7 @@ def test_state_machine_receive():
     s1 = State("FIRST")
 
     def callback(transition, memory):
-        return True
+        return None
 
     def condition(transition, memory):
         return True
@@ -148,6 +173,32 @@ def test_state_machine_receive():
     assert fsm.states == [s0, s1]
     assert fsm.transitions[s0] == {0: transition}
     assert fsm.transitions[s1] == {}
+    assert fsm.wildcard_transitions == {}
+    assert fsm.init_state == s0
+    assert fsm.state == s1
+    assert fsm.memory == {}
+
+
+def test_state_machine_receive_with_callback_output():
+
+    s0 = State("INIT")
+    s1 = State("FIRST")
+
+    def callback(transition, memory):
+        return "OUT from callback"
+
+    def condition(transition, memory):
+        return True
+
+    fsm = StateMachine([s0, s1])
+    transition = fsm.add_transition(s0, s1, 0, callback, condition, "OUT")
+    next_state, out = fsm.receive(0)
+    assert next_state == s1
+    assert out == "OUT from callback"
+    assert fsm.states == [s0, s1]
+    assert fsm.transitions[s0] == {0: transition}
+    assert fsm.transitions[s1] == {}
+    assert fsm.wildcard_transitions == {}
     assert fsm.init_state == s0
     assert fsm.state == s1
     assert fsm.memory == {}
@@ -172,6 +223,7 @@ def test_state_machine_receive_with_condition():
     assert fsm.states == [s0, s1]
     assert fsm.transitions[s0] == {0: transition}
     assert fsm.transitions[s1] == {}
+    assert fsm.wildcard_transitions == {}
     assert fsm.init_state == s0
     assert fsm.state == s0
     assert fsm.memory == {}
@@ -196,6 +248,57 @@ def test_state_machine_receive_with_callback():
     assert fsm.states == [s0, s1]
     assert fsm.transitions[s0] == {0: transition}
     assert fsm.transitions[s1] == {}
+    assert fsm.wildcard_transitions == {}
     assert fsm.init_state == s0
     assert fsm.state == s1
     assert fsm.memory == {"temp": "Hello"}
+
+
+def test_state_machine_wildcard_receive():
+
+    s0 = State("INIT")
+    s1 = State("FIRST")
+
+    def callback(transition, memory):
+        return None
+
+    def condition(transition, memory):
+        return True
+
+    fsm = StateMachine([s0, s1])
+    transition = fsm.add_wildcard_transition(s0, s1, callback, condition, "OUT")
+    next_state, out = fsm.receive("안녕")
+    assert next_state == s1
+    assert out == "OUT"
+    assert fsm.states == [s0, s1]
+    assert fsm.transitions[s0] == {}
+    assert fsm.transitions[s1] == {}
+    assert fsm.wildcard_transitions == {s0: transition}
+    assert fsm.init_state == s0
+    assert fsm.state == s1
+    assert fsm.memory == {}
+
+
+def test_state_machine_wildcard_wrong_receive():
+
+    s0 = State("INIT")
+    s1 = State("FIRST")
+
+    def callback(transition, memory):
+        return None
+
+    def condition(transition, memory):
+        return True
+
+    fsm = StateMachine([s0, s1])
+    transition = fsm.add_wildcard_transition(s1, s0, callback, condition, "OUT")
+    next_state, out = fsm.receive("안녕")
+    assert next_state == s0
+    assert out is None
+    assert fsm.states == [s0, s1]
+    assert fsm.transitions[s0] == {}
+    assert fsm.transitions[s1] == {}
+    assert fsm.wildcard_transitions == {s1: transition}
+    assert fsm.init_state == s0
+    assert fsm.state == s0
+    assert fsm.memory == {}
