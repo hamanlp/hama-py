@@ -1,4 +1,6 @@
-from jamo import (
+from hama.state_machine import State, StateMachine
+
+from .constants import (
     both_chosung_and_jongsung,
     chosungs,
     jongsungs,
@@ -6,8 +8,6 @@ from jamo import (
     unique_to_chosungs,
     unique_to_jongsungs,
 )
-
-from hama.state_machine import State, StateMachine
 
 store = "store"
 flush_then_store = "flush_then_store"
@@ -85,7 +85,6 @@ class Assembler:
                     if self.unassembled_jamos:
                         yield self.flush()
                     self.unassembled_jamos = [jong, c]
-            print(c, out, self.fsm.state.name)
         yield self.flush()
 
     def flush(self):
