@@ -1,4 +1,6 @@
-from constants import (
+from hama.state_machine import State, StateMachine
+
+from .constants import (
     both_chosung_and_jongsung,
     chosungs,
     jongsungs,
@@ -6,8 +8,6 @@ from constants import (
     unique_to_chosungs,
     unique_to_jongsungs,
 )
-
-from hama.state_machine import State, StateMachine
 
 store = "store"
 flush_then_store = "flush_then_store"
@@ -89,10 +89,14 @@ class Assembler:
 
     def flush(self):
 
-        if not self.unassembled_jamos:
+        chunk = self.unassembled_jamos
+
+        if not chunk:
             return ""
 
-        chunk = self.unassembled_jamos
+        if len(chunk) == 1:
+            return chunk[0]
+
         chunk_length = len(chunk)
         chosung = chosungs.index(chunk[0]) * 21 * 28 if chunk_length > 0 else 0
         joongsung = joongsungs.index(chunk[1]) * 28 if chunk_length > 1 else 0
