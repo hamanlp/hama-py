@@ -67,7 +67,7 @@ class Assembler:
             self.fsm.add_transition(S3, S0, c, out=flush_then_flush)
 
         for c in both_chosung_and_jongsung:
-            self.fsm.add_transition(S0, S0, c, out=flush_then_store)
+            self.fsm.add_transition(S0, S1, c, out=flush_then_store)
             self.fsm.add_transition(S1, S1, c, out=flush_then_store)
             self.fsm.add_transition(S2, S3, c, out=store)
             self.fsm.add_transition(S3, S1, c, out=flush_then_store)
@@ -105,12 +105,13 @@ class Assembler:
                     if self.unassembled_jamos:
                         yield self.flush()
                     self.unassembled_jamos = [jong, c]
+        yield self.flush()
 
     def flush(self):
 
         chunk = self.unassembled_jamos
         chunk_length = len(chunk)
-        chosung = chosungs.index(chunk) * 21 * 28 if chunk_length > 0 else 0
+        chosung = chosungs.index(chunk[0]) * 21 * 28 if chunk_length > 0 else 0
         joongsung = joongsungs.index(chunk[1]) * 28 if chunk_length > 1 else 0
         jongsung = jongsungs.index(chunk[2]) if chunk_length > 2 else 0
 
