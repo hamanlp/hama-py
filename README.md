@@ -1,5 +1,4 @@
-**REIMPLEMENTING MAJOR FEATURES WITH UPDATED DICTRIONARIES AND DECODING SCHEMES!! NOT READY FOR PRODUCTION USE!!**
-**COMING SOOOON**
+**ALL DEVELOPMENT MOVED [HERE](https://github.com/hamanlp/hama)**
 
 <p align="center">
     <img src="https://raw.githubusercontent.com/hamanlp/hama-py/master/logo.png" height="100px" width="100px" alt="hama logo" align="center">
